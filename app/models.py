@@ -1,10 +1,12 @@
 from app import flask_app, db
 
 
-class Todo(db.Model):
+class Task(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     details = db.Column(db.Text)
-    completed = db.Column(db.Boolean)
+    status = db.Column(db.String(20))
+    hours = db.Column(db.Integer)
+    project_id = db.Column(db.Integer, db.ForeignKey('project.id'))
 
     def save_task_to_db(self):
         with flask_app.app_context():
@@ -12,4 +14,8 @@ class Todo(db.Model):
             db.session.commit()
 
 
+class Project(db.Model):
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    name = db.Column(db.String(200))
+    tasks = db.relationship('Task', backref='project', lazy='dynamic')
 
