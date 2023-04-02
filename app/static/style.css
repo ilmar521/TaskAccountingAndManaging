@@ -1,0 +1,30 @@
+a.checked {
+    background-color: blue;
+  } 
+
+/* 
+a.checked:before {
+    content: '\2713';
+    display: inline-block;
+    color: rgb(255, 255, 255);
+
+  }
+
+a.checked {
+    list-style-type: none;
+    font-size: 1em; 
+    background-color: blue;
+  } */
+
+a.checked:before {
+    content:'\2714';
+    font-family: 'Times New Roman', Times, serif;
+    display:inline-block;
+    vertical-align: top;
+    line-height: 1em;
+    width: 1em;
+    height:1em;
+    margin-right: 0.3em;
+    text-align: center;
+    color: #ffffff;
+} 
