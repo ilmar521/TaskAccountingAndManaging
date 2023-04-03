@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
     <link rel="stylesheet" href={{url_for('static', filename='style.css')}}>
+    <link rel="stylesheet" href="../static/style.css">
     <title>Task manager</title>
 </head>
 <body style="background-color: rgb(245, 218, 208);">
@@ -19,7 +20,15 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent"></div>
         </div>
     </nav>
-    
+
+
+<!--    <form method="POST">-->
+<!--
+<!--    -->
+<!--    <a href="{{url_for('index')}}">TEST</a>-->
+
+    <form method="POST">
+
     <div class="container-fluid">
         <div class="row mt-3">
             <div class="col-2 projects">
@@ -28,16 +37,10 @@
                     <button type="button" class="mx-2 btn btn-danger">+</button>
                 </div>
                 <div class="btn-group-vertical w-100" role="group" aria-label="Vertical radio toggle button group">
-                    <input type="radio" class="btn-check" name="vbtn-radio" id="vbtn-radio1" autocomplete="off" checked>
+                    <input type="radio" class="btn-check" name="project" value="1" id="vbtn-radio1" autocomplete="off" checked>
                     <label class="btn btn-outline-danger" for="vbtn-radio1">Project 1</label>
-                    <input type="radio" class="btn-check" name="vbtn-radio" id="vbtn-radio2" autocomplete="off">
-                    <label class="btn btn-outline-danger" for="vbtn-radio2">Project 2</label>
-                    <input type="radio" class="btn-check" name="vbtn-radio" id="vbtn-radio3" autocomplete="off">
-                    <label class="btn btn-outline-danger" for="vbtn-radio3">Project 3</label>                   
-                    <input type="radio" class="btn-check" name="vbtn-radio" id="vbtn-radio4" autocomplete="off">
-                    <label class="btn btn-outline-danger" for="vbtn-radio4">Project 4</label>      
-                    <input type="radio" class="btn-check" name="vbtn-radio" id="vbtn-radio5" autocomplete="off">
-                    <label class="btn btn-outline-danger" for="vbtn-radio5">Project 4</label>      
+                    <input type="radio" class="btn-check" name="project" value="2" id="vbtn-radio2" autocomplete="off">
+                    <label class="btn btn-outline-danger" for="vbtn-radio2">Project 2</label>  
                 </div>
 
             </div>
@@ -48,23 +51,23 @@
                         <!-- <input type="radio" class="btn-check card bg-light text-center" style="height: 50px;" name="st-radio" id="st-radio1" autocomplete="off" checked>
                         <label class="btn btn-outline-danger" for="st-radio1">New</label> -->
                         <!-- <div class="card bg-light text-center" style="height: 50px;">New</div> -->
-                        <input type="radio" class="btn-check" name="status" id="option1" autocomplete="off">
-                        <label class="btn btn-secondary " for="option1">New</label>
+                        <input type="radio" class="btn-check" name="status" value="new" id="status_new" autocomplete="off">
+                        <label class="btn btn-secondary " for="status_new">New</label>
                     </div>        
                     <div class="col-3">
-                        <input type="radio" class="btn-check" name="status" id="option2" autocomplete="off">
-                        <label class="btn btn-secondary" for="option2">In operation</label>
+                        <input type="radio" class="btn-check" name="status" value="in_operation" id="status_in_operation"  autocomplete="off">
+                        <label class="btn btn-secondary" for="status_in_operation">In operation</label>
                         <!-- <input type="radio" class="btn-check" name="st-radio" id="st-radio2" autocomplete="off">
                         <div class="card bg-primary bg-opacity-50 text-center" style="height: 50px;">In operation</div>    -->
                     </div>    
                     <div class="col-3">
-                        <input type="radio" class="btn-check" name="status" id="option3" autocomplete="off" checked>
-                        <label class="btn btn-secondary " for="option3">Complete</label>
+                        <input type="radio" class="btn-check" name="status" value="complete" id="status_complete"  autocomplete="off" checked>
+                        <label class="btn btn-secondary " for="status_complete">Complete</label>
                         <!-- <div class="card bg-success bg-opacity-50 text-center" style="height: 50px;">Complete</div>    -->
                     </div>    
                     <div class="col-3">
-                        <input type="radio" class="btn-check" name="status" id="option4" autocomplete="off" checked>
-                        <label class="btn btn-secondary " for="option4">Archive</label>
+                        <input type="radio" class="btn-check" name="status" value="archive" id="status_archive"  autocomplete="off" checked>
+                        <label class="btn btn-secondary " for="status_archive">Archive</label>
                         <!-- <div class="card bg-secondary bg-opacity-50 text-center" style="height: 50px;">Archive</div>    -->
                     </div>    
                 </div>
@@ -75,41 +78,8 @@
         </div>
     </div>
 
-<!--    {% for message in get_flashed_messages() %}-->
-<!--        <div class="alert alert-warning" role="alert">-->
-<!--            {{ message }}-->
-<!--        </div>-->
-<!--    {% endfor %}   -->
-<!--    <div class="container-fluid d-flex flex-column align-items-center">-->
-<!--        <div class="container-fluid d-flex justify-content-start w-50">-->
-<!--            <form method="POST" class="input-group mb-3 mt-4">-->
-<!--                <input name="task-name" type="text" class="form-control" placeholder="new task" aria-label="Recipient's username" aria-describedby="button-addon2">-->
-<!--                <button class="btn btn-outline-secondary" type="submit" id="button-addon2">ADD</button>-->
-<!--            </form>-->
-<!--        </div>-->
-
-<!--        <div class="container-fluid d-flex flex-column mt-2 w-50" id="tasks">-->
-<!--            {% for task in all_tasks %}-->
-<!--            <div class="d-flex mt-1">-->
-<!--                <a href="{{url_for('delete', todo_id=task['id'])}}"><button class="btn btn-danger me-1 d-flex align-items-center ps-2 pe-3" type="submit" style="width:5px; height: 25px;">X</button></a>-->
-<!--                <div class="form-check">-->
-<!--                    {% if task['completed'] %}-->
-<!--                    <a href="{{url_for('complete', todo_id=task['id'])}}" class="form-check-input checkbox-task checked"  type="checkbox" value="" id="{{task['id']}}"></a>-->
-<!--                    <label class="form-check-label text-decoration-line-through" for="flexCheckDefault">-->
-<!--                        {{ task['details'] }}-->
-<!--                    </label>-->
-<!--                    {% else %}-->
-<!--                    <a href="{{url_for('complete', todo_id=task['id'])}}" class="form-check-input checkbox-task"  type="checkbox" value="" id="{{task['id']}}"></a>-->
-<!--                    <label class="form-check-label" for="flexCheckDefault">-->
-<!--                        {{ task['details'] }}-->
-<!--                    </label>-->
-<!--                    {% endif %}-->
-<!--                </div>            -->
-<!--            </div>-->
-<!--            {% endfor %}-->
-<!--        </div>-->
-    </div>
-
+    <button class="btn btn-outline-secondary" type="submit" id="button-addon2">TEST</button>-->
+    </form>
 
     <script src="../static/script.js"></script>
     <script src={{url_for('static', filename='script.js')}}></script>   
