@@ -11,8 +11,22 @@
 </head>
 <body style="background-color: rgb(245, 218, 208);">
 
+   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<!--    <script type=text/javascript>-->
+<!--            $(function() {-->
+<!--              $('a.add_button').bind('click', function(e) {-->
+<!--                e.preventDefault()-->
+<!--                $.getJSON('/add_product_to_cart_from_products/' + e.target.id,-->
+<!--                    function(data) {-->
+<!--                  //do nothing-->
+<!--                });-->
+<!--                return false;-->
+<!--              });-->
+<!--            });-->
+<!--    </script>-->
+
     <nav class="navbar navbar-expand-lg bg-danger bg-gradient">
-        <div class="container">
+        <div class="container-fluid">
             <a class="navbar-brand fs-3 text-light" href="#">Task manager</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -22,10 +36,7 @@
     </nav>
 
 
-<!--    <form method="POST">-->
-<!--    <a href="{{url_for('index')}}">TEST</a>-->
-
-    <form method="POST">
+    <form method="POST" id="main_form">
 
     <div class="container-fluid">
         <div class="row mt-3">
