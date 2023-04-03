@@ -12,6 +12,7 @@ input.forEach(element => {
 //          });
 //         });
 
-     $.post("/", $('#main_form').serialize());
+//     $.post("/", $('#main_form').serialize());
+     $("#main_form").submit();
     });   
 });
