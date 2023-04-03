@@ -95,7 +95,9 @@
                     </div>    
                 </div>
                 <div class="row">
-                    <div></div>
+                    {% for task in all_tasks %}
+                        <div>{{ task['details'] }}</div>
+                    {% endfor %}
                 </div>
             </div>       
         </div>
