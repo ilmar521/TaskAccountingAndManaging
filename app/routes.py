@@ -12,8 +12,9 @@ def index():
         statuses = request.form.getlist('status')
         current_project = int(projects[0])
         current_status = statuses[0]
-        task_name = flask.request.form.get("task-name")
-        if task_name != None:
+        task_name = request.form.get("task-name")
+        task_adding = request.form.get("button_add_task")
+        if task_adding is not None:
             if task_name == '':
                 flash('Enter the name of task!')
             else:
