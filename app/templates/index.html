@@ -95,9 +95,11 @@
                     </div>    
                 </div>
                 <div class="row">
-                    {% for task in all_tasks %}
-                        <div>{{ task['details'] }}</div>
-                    {% endfor %}
+                    <div class="container px-5 mt-3">
+                        {% for task in all_tasks %}
+                            <div style="border: 1px solid;">{{ task['details'] }}</div>
+                        {% endfor %}
+                    </div>
                 </div>
             </div>       
         </div>
