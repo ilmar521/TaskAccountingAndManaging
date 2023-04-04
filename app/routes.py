@@ -30,4 +30,11 @@ def index():
     return flask.render_template('index.html', all_tasks=all_tasks, all_projects=all_projects, current_project=current_project, current_status=current_status)
 
 
+@flask_app.route("/change_status/<task_id>/<status>", methods=("GET", "POST"))
+def change_status(task_id, status):
+    task_id = task_id.replace('task-', '')
+    status = status.replace('label_', '')
+    task = Task.query.filter(Task.id == int(task_id)).first()
+    task.change_value('status', status)
+    return ('')
 

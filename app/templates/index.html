@@ -54,7 +54,7 @@
                         {% else %}
                             <input type="radio" class="btn-check" name="status" value="new" id="status_new" autocomplete="off">
                         {% endif %}
-                        <label class="btn btn-secondary" for="status_new">New</label>
+                        <label class="btn btn-secondary" id="label_new"  for="status_new">New</label>
                     </div>        
                     <div class="col-3 status">
                         {% if current_status == 'in_operation' %}
@@ -62,7 +62,7 @@
                         {% else %}
                             <input type="radio" class="btn-check" name="status" value="in_operation" id="status_in_operation"  autocomplete="off">
                         {% endif %}
-                        <label class="btn btn-secondary" for="status_in_operation">In operation</label>
+                        <label class="btn btn-secondary" id="label_in_operation" for="status_in_operation">In operation</label>
                     </div>    
                     <div class="col-3 status">
                         {% if current_status == 'complete' %}
@@ -70,7 +70,7 @@
                         {% else %}
                             <input type="radio" class="btn-check" name="status" value="complete" id="status_complete"  autocomplete="off">
                         {% endif %}
-                        <label class="btn btn-secondary " for="status_complete">Complete</label>
+                        <label class="btn btn-secondary" id="label_complete" for="status_complete">Complete</label>
                     </div>    
                     <div class="col-3 status">
                         {% if current_status == 'archive' %}
@@ -78,7 +78,7 @@
                         {% else %}
                             <input type="radio" class="btn-check" name="status" value="archive" id="status_archive"  autocomplete="off">
                         {% endif %}
-                        <label class="btn btn-secondary " for="status_archive">Archive</label>
+                        <label class="btn btn-secondary " id="label_archive" for="status_archive">Archive</label>
                     </div>    
                 </div>
                 <div class="row">

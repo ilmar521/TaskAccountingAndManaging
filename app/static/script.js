@@ -23,7 +23,7 @@ statuses.forEach(element => {
     element.addEventListener('drop', function (event) {
         event.preventDefault();
         let id = event.dataTransfer.getData("id");
-        let box = document.getElementById(id)
-        alert('We did it! ID ' + id)
+        $.post(`/change_status/${id}/${event.target.id}`)
+        $("#main_form").submit();
     })
 });

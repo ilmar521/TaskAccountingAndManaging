@@ -5,8 +5,14 @@ class Task(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     details = db.Column(db.Text)
     status = db.Column(db.String(20))
-    hours = db.Column(db.Integer)
+    hours = db.Column(db.Float)
     project_id = db.Column(db.Integer, db.ForeignKey('project.id'))
+
+    def __getitem__(self, item):
+        return getattr(self, item)
+
+    def __setitem__(self, key, value):
+        setattr(self, key, value)
 
     def save_task_to_db(self):
         with flask_app.app_context():
@@ -16,12 +22,14 @@ class Task(db.Model):
     def change_value(self, type_value, new_value):
         with flask_app.app_context():
             self[type_value] = new_value
-            db.session.add(self)
-            db.session.commit()
+            current_db_sessions = db.session.object_session(self)
+            current_db_sessions.add(self)
+            current_db_sessions.commit()
 
 
 class Project(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String(200))
+    hour_rate = db.Column(db.Integer)
     tasks = db.relationship('Task', backref='project', lazy='dynamic')
 
