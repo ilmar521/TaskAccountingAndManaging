@@ -1,5 +1,5 @@
 
-let input = document.querySelectorAll('input');
+let input = document.querySelectorAll('input.btn-check');
 let tasks = document.querySelectorAll('.task');
 let statuses = document.querySelectorAll('.status');
 

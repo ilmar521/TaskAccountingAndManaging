@@ -12,6 +12,13 @@ def index():
         statuses = request.form.getlist('status')
         current_project = int(projects[0])
         current_status = statuses[0]
+        task_name = flask.request.form.get("task-name")
+        if task_name != None:
+            if task_name == '':
+                flash('Enter the name of task!')
+            else:
+                new_task = Task(details=task_name, status='new', project_id=current_project)
+                new_task.save_task_to_db()
         all_projects = Project.query.all()
         all_tasks = list(Task.query.filter(Task.project_id == current_project, Task.status == current_status))
     else:
