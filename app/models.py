@@ -13,6 +13,12 @@ class Task(db.Model):
             db.session.add(self)
             db.session.commit()
 
+    def change_value(self, type_value, new_value):
+        with flask_app.app_context():
+            self[type_value] = new_value
+            db.session.add(self)
+            db.session.commit()
+
 
 class Project(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
