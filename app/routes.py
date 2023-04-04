@@ -14,7 +14,6 @@ def index():
         current_status = statuses[0]
         all_projects = Project.query.all()
         all_tasks = list(Task.query.filter(Task.project_id == current_project, Task.status == current_status))
-        # return flask.redirect(flask_app.url_for('index', all_tasks=all_tasks, all_projects=all_projects, current_project=current_project, current_status=current_status))
     else:
         all_projects = Project.query.all()
         current_project = all_projects[0].id
