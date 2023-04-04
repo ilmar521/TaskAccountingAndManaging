@@ -11,7 +11,32 @@
 </head>
 <body style="background-color: rgb(245, 218, 208);">
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.14.0/jquery.validate.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<!--    <script type=text/javascript>-->
+<!--        $(function() {-->
+
+<!--            $("#form_project_adding").validate({-->
+<!--            rules: {-->
+<!--                name_new_project: {-->
+<!--                required: true,-->
+<!--                },-->
+<!--                hour_rate: {-->
+<!--                required: true,-->
+<!--                }-->
+<!--            },-->
+<!--            messages: {-->
+<!--                pName: {-->
+<!--                required: "Please enter name of project",-->
+<!--                },-->
+<!--                hour_rate: {-->
+<!--                required: "Please enter hour rate of this project",-->
+<!--                }-->
+<!--            }-->
+<!--            });-->
+<!--        });-->
+<!--    </script>-->
 
     <nav class="navbar navbar-expand-lg bg-danger bg-gradient">
         <div class="container-fluid">
@@ -23,6 +48,32 @@
         </div>
     </nav>
 
+    <div class="modal fade" id="project_adding" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" role="dialog">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="exampleModalLabel">Adding new project</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form  action="{{ url_for('add_project') }}" method="POST" role="form" id="form_project_adding" class="needs-validation">
+              <div class="mb-3">
+                <label for="name_new_project" class="col-form-label">Project name:</label>
+                <input type="text" name="name_new_project" class="form-control" id="name_new_project" required>
+              </div>
+              <div class="mb-3">
+                <label for="hour_rate" class="col-form-label" >Hour rate:</label>
+                <input type="number" name="hour_rate" class="form-control" id="hour_rate" required>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" id="submit_new_project" class="btn btn-primary bg-danger bg-gradient">Save project</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
 
     <form method="POST" id="main_form">
     <div class="container-fluid">
@@ -30,8 +81,9 @@
             <div class="col-2 projects">
                 <div class="w-100 d-flex mb-2">
                     <h3>Projects</h3>
-                    <button type="button" class="mx-2 btn btn-danger">+</button>
+                    <button type="button" class="mx-2 btn btn-danger" data-bs-toggle="modal" data-bs-target="#project_adding">+</button>
                 </div>
+
                 <div class="btn-group-vertical w-100" role="group" aria-label="Vertical radio toggle button group">
                     {% for project in all_projects %}
                         {% if current_project == project['id'] %}

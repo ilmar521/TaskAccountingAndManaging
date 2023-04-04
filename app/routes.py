@@ -4,9 +4,13 @@ from app import flask_app, db
 from app.models import Task, Project
 from flask import flash
 
+current_project = None
+current_status = None
+
 
 @flask_app.route("/", methods=("GET", "POST"))
 def index():
+    global current_project, current_status
     if request.method == "POST":
         projects = request.form.getlist('project')
         statuses = request.form.getlist('status')
@@ -24,8 +28,10 @@ def index():
         all_tasks = list(Task.query.filter(Task.project_id == current_project, Task.status == current_status))
     else:
         all_projects = Project.query.all()
-        current_project = all_projects[0].id
-        current_status = 'new'
+        if current_project is None:
+            current_project = all_projects[0].id
+        if current_status is None:
+            current_status = 'new'
         all_tasks = list(Task.query.filter(Task.project_id == current_project, Task.status == current_status))
     return flask.render_template('index.html', all_tasks=all_tasks, all_projects=all_projects, current_project=current_project, current_status=current_status)
 
@@ -37,4 +43,14 @@ def change_status(task_id, status):
     task = Task.query.filter(Task.id == int(task_id)).first()
     task.change_value('status', status)
     return ('')
+
+
+@flask_app.route("/add_project", methods=("GET", "POST"))
+def add_project():
+    if request.method == "POST":
+        name_new_project = request.form.get("name_new_project")
+        hour_rate = request.form.get("hour_rate")
+        new_project = Project(name=name_new_project, hour_rate=hour_rate)
+        new_project.save_to_db()
+        return flask.redirect(flask.url_for('index'))
 

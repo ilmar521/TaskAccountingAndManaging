@@ -33,3 +33,7 @@ class Project(db.Model):
     hour_rate = db.Column(db.Integer)
     tasks = db.relationship('Task', backref='project', lazy='dynamic')
 
+    def save_to_db(self):
+        with flask_app.app_context():
+            db.session.add(self)
+            db.session.commit()

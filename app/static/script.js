@@ -3,6 +3,7 @@ let input = document.querySelectorAll('input.btn-check');
 let tasks = document.querySelectorAll('.task');
 let statuses = document.querySelectorAll('.status');
 
+
 input.forEach(element => {
     element.addEventListener('change', function () {
      $("#main_form").submit();
