@@ -3,6 +3,7 @@ let input = document.querySelectorAll('input.btn-check');
 let tasks = document.querySelectorAll('.task');
 let statuses = document.querySelectorAll('.status');
 
+
 $(document).ready(function () {
     $('.btn_edit_task').click(function () {
         var url = $(this).data('whatever');
