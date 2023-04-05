@@ -3,7 +3,6 @@
   box-sizing: border-box;
 }
 
-
 .btn_edit_task, .btn_edit_prj {
     display: none;
   }
@@ -16,11 +15,42 @@
     display: block; 
 }
 
+.btn-project {
+  font-size: large;  
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.check-project+label i {
+  color: #e14150;
+}
+
+.check-project:checked+label i {
+  color: #ffffff;
+}
+
+.btn_edit_prj {
+  margin-left: 10px;
+}
+
+.check-status:checked+label {
+  border: 2px solid #dd4151;
+}
+
+.btn-status:hover {
+  transform: scale(1.05);
+  transition: transform 0.3s;
+}
+
 .btn-status {
   width: 20vw;
   height: 7vh;
-  text-align: center;
   font-size: larger;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: black;
 }
 
 .fa-sharp:hover {

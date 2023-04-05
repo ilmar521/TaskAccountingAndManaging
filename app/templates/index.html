@@ -105,12 +105,12 @@
                     {% for project in all_projects %}
                         <div class="project d-flex w-100">
                             {% if current_project == project['id'] %}
-                                <input type="radio" class="btn-check" name="project" value="{{ project['id'] }}" id="project-{{ project['id'] }}" autocomplete="off" checked>
+                                <input type="radio" class="btn-check check-project" name="project" value="{{ project['id'] }}" id="project-{{ project['id'] }}" autocomplete="off" checked>
                             {% else %}
-                                <input type="radio" class="btn-check" name="project" value="{{ project['id'] }}" id="project-{{ project['id'] }}" autocomplete="off">
+                                <input type="radio" class="btn-check check-project" name="project" value="{{ project['id'] }}" id="project-{{ project['id'] }}" autocomplete="off">
                             {% endif %}
-                            <label class="btn btn-outline-danger w-100" for="project-{{ project['id'] }}">{{ project['name'] }}</label>
-                            <a class="btn_edit_prj" data-bs-toggle="modal" data-whatever="{{ url_for('project_edit', id=project['id']) }}" data-id="{{ project['id'] }}" href="#"> / </a>
+                            <label class="btn btn-project btn-outline-danger bg-gradient w-100" for="project-{{ project['id'] }}">{{ project['name'] }} <a class="btn_edit_prj" data-bs-toggle="modal" data-whatever="{{ url_for('project_edit', id=project['id']) }}" data-id="{{ project['id'] }}" href="#"><i class="fa-solid fa-pen fa-sm"></i></a></label>
+                            
                         </div>
                     {% endfor %}
                 </div>
@@ -122,35 +122,35 @@
                     <div class="col-3 status">
                         <!-- <div class="card bg-light text-center" style="height: 50px;">New</div> -->
                         {% if current_status == 'new' %}
-                            <input type="radio" class="btn-check" name="status" value="new" id="status_new" autocomplete="off" checked>
+                            <input type="radio" class="btn-check check-status" name="status" value="new" id="status_new" autocomplete="off" checked>
                         {% else %}
-                            <input type="radio" class="btn-check" name="status" value="new" id="status_new" autocomplete="off">
+                            <input type="radio" class="btn-check check-status" name="status" value="new" id="status_new" autocomplete="off">
                         {% endif %}
-                        <label class="btn-status btn btn-secondary" id="label_new"  for="status_new">New</label>
+                        <label style="background-color: rgb(192, 210, 226);" class="btn-status btn btn-secondary" id="label_new"  for="status_new">New</label>
                     </div>        
                     <div class="col-3 status">
                         {% if current_status == 'in_operation' %}
-                            <input type="radio" class="btn-check" name="status" value="in_operation" id="status_in_operation"  autocomplete="off" checked>
+                            <input type="radio" class="btn-check check-status" name="status" value="in_operation" id="status_in_operation"  autocomplete="off" checked>
                         {% else %}
-                            <input type="radio" class="btn-check" name="status" value="in_operation" id="status_in_operation"  autocomplete="off">
+                            <input type="radio" class="btn-check check-status" name="status" value="in_operation" id="status_in_operation"  autocomplete="off">
                         {% endif %}
-                        <label class="btn-status btn btn-secondary" id="label_in_operation" for="status_in_operation">In operation</label>
+                        <label style="background-color: rgb(146, 144, 247);" class="btn-status btn btn-secondary" id="label_in_operation" for="status_in_operation">In operation</label>
                     </div>    
                     <div class="col-3 status">
                         {% if current_status == 'complete' %}
-                            <input type="radio" class="btn-check" name="status" value="complete" id="status_complete"  autocomplete="off" checked>
+                            <input type="radio" class="btn-check check-status" name="status" value="complete" id="status_complete"  autocomplete="off" checked>
                         {% else %}
-                            <input type="radio" class="btn-check" name="status" value="complete" id="status_complete"  autocomplete="off">
+                            <input type="radio" class="btn-check check-status" name="status" value="complete" id="status_complete"  autocomplete="off">
                         {% endif %}
-                        <label class="btn-status btn btn-secondary" id="label_complete" for="status_complete">Complete</label>
+                        <label style="background-color: rgb(132, 212, 163);" class="btn-status btn btn-secondary" id="label_complete" for="status_complete">Complete</label>
                     </div>    
                     <div class="col-3 status">
                         {% if current_status == 'archive' %}
-                            <input type="radio" class="btn-check" name="status" value="archive" id="status_archive"  autocomplete="off" checked>
+                            <input type="radio" class="btn-check check-status" name="status" value="archive" id="status_archive"  autocomplete="off" checked>
                         {% else %}
-                            <input type="radio" class="btn-check" name="status" value="archive" id="status_archive"  autocomplete="off">
+                            <input type="radio" class="btn-check check-status" name="status" value="archive" id="status_archive"  autocomplete="off">
                         {% endif %}
-                        <label class="btn-status btn btn-secondary " id="label_archive" for="status_archive">Archive</label>
+                        <label style="background-color: rgb(157, 160, 159);" class="btn-status btn btn-secondary " id="label_archive" for="status_archive">Archive</label>
                     </div>    
                 </div>
                 <div class="row">
