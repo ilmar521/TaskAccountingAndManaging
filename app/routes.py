@@ -68,3 +68,13 @@ def task_edit(id):
         task.change_value('hours', form.hours.data)
         # return jsonify(status='ok')
     return flask.render_template('_task_edit.html', title="Edit task", form=form)
+
+
+@flask_app.route("/delete_task/<task_id>", methods=("GET", "POST"))
+def delete_task(task_id):
+    task = Task.query.filter(Task.id == int(task_id)).first_or_404()
+    with flask_app.app_context():
+        current_db_sessions = db.session.object_session(task)
+        current_db_sessions.delete(task)
+        current_db_sessions.commit()
+    return ('')

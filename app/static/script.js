@@ -6,6 +6,7 @@ let statuses = document.querySelectorAll('.status');
 $(document).ready(function () {
     $('.btn_edit_task').click(function () {
         var url = $(this).data('whatever');
+        var id_task = $(this).data('id');
         $.get(url, function (data) {
             $('#Modal_layout_task .modal-content').html(data);
             $('#Modal_layout_task').modal('show');
@@ -13,6 +14,16 @@ $(document).ready(function () {
                 $.post(url, data = $('#ModalForm_edit_task').serialize());
                 $("#main_form").submit();
             });
+            $('#delete_task').click(function (event) {
+                event.preventDefault();
+                result = confirm('Are you sure?');
+                if (result) {
+                    $.post(`/delete_task/${id_task}`);
+                    $("#main_form").submit();
+                    $("#Modal_layout_task").hide();
+                }
+            })
+
 //            $('#submit').click(function (event) {
 //                event.preventDefault();
 //                $.post(url, data = $('#ModalForm_edit_task').serialize(), function (

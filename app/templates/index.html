@@ -163,7 +163,7 @@
                             <div class="task d-flex" draggable='True' id="task-{{ task['id'] }}" style="border: 1px solid;">
                                 {{ task['details'] }}
 <!--                                <button class="btn_edit_task" data-bs-toggle="modal" data-bs-whatever="{{ url_for('task_edit', id=task['id']) }}" type="button"> / </button>-->
-                                <a class="btn_edit_task" data-bs-toggle="modal" data-whatever="{{ url_for('task_edit', id=task['id']) }}" href="#"> / </a>
+                                <a class="btn_edit_task" data-bs-toggle="modal" data-whatever="{{ url_for('task_edit', id=task['id']) }}" data-id="{{ task['id'] }}" href="#"> / </a>
                             </div>
                         {% endfor %}
                         {% if current_status == 'new' %}
