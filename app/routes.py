@@ -2,7 +2,7 @@ import flask
 from flask import request
 from app import flask_app, db
 from app.models import Task, Project
-from app.forms import TaskEditForm
+from app.forms import TaskEditForm, ProjectEditForm
 from flask import flash
 
 current_project = None
@@ -23,7 +23,7 @@ def index():
             if task_name == '':
                 flash('Enter the name of task!')
             else:
-                new_task = Task(details=task_name, status='new', project_id=current_project)
+                new_task = Task(details=task_name, status='new', hours=0, project_id=current_project)
                 new_task.save_task_to_db()
         all_projects = Project.query.all()
         all_tasks = list(Task.query.filter(Task.project_id == current_project, Task.status == current_status))
@@ -43,7 +43,7 @@ def change_status(task_id, status):
     status = status.replace('label_', '')
     task = Task.query.filter(Task.id == int(task_id)).first()
     task.change_value('status', status)
-    return ('')
+    return ()
 
 
 @flask_app.route("/add_project", methods=("GET", "POST"))
@@ -77,4 +77,32 @@ def delete_task(task_id):
         current_db_sessions = db.session.object_session(task)
         current_db_sessions.delete(task)
         current_db_sessions.commit()
-    return ('')
+    return ()
+
+
+@flask_app.route('/project/<id>/edit', methods=['GET', 'POST'])
+def project_edit(id):
+    project = Project.query.filter_by(id=id).first_or_404()
+    form = ProjectEditForm(name=project.name, hour_rate=project.hour_rate)
+    if request.method == 'GET':
+        form.name.data = project.name
+        form.hour_rate.data = project.hour_rate
+    else:
+        project.change_value('name', form.name.data)
+        project.change_value('hour_rate', form.hour_rate.data)
+    return flask.render_template('_project_edit.html', title="Edit project", form=form)
+
+
+@flask_app.route("/delete_project/<project_id>", methods=("GET", "POST"))
+def delete_project(project_id):
+    project = Project.query.filter(Project.id == int(project_id)).first_or_404()
+    with flask_app.app_context():
+        all_tasks = list(Task.query.filter(Task.project_id == project.id))
+        current_db_sessions = db.session.object_session(project)
+        current_db_sessions.delete(project)
+        current_db_sessions.commit()
+        for task in all_tasks:
+            current_db_sessions = db.session.object_session(task)
+            current_db_sessions.delete(task)
+            current_db_sessions.commit()
+    return ()

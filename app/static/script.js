@@ -24,6 +24,7 @@ $(document).ready(function () {
                 }
             })
 
+
 //            $('#submit').click(function (event) {
 //                event.preventDefault();
 //                $.post(url, data = $('#ModalForm_edit_task').serialize(), function (
@@ -47,7 +48,30 @@ $(document).ready(function () {
 //            });
         })
     });
+
+    $('.btn_edit_prj').click(function () {
+        var url = $(this).data('whatever');
+        var id_prj = $(this).data('id');
+        $.get(url, function (data) {
+            $('#Modal_layout_prj .modal-content').html(data);
+            $('#Modal_layout_prj').modal('show');
+            $("#Modal_layout_prj").on('hidden.bs.modal', function (e) {
+                $.post(url, data = $('#ModalForm_edit_project').serialize());
+                $("#main_form").submit();
+            });
+            $('#delete_project').click(function (event) {
+                event.preventDefault();
+                result = confirm('Are you sure? All tasks included in this project will also be deleted.');
+                if (result) {
+                    $.post(`/delete_project/${id_prj}`);
+                    $("#main_form").submit();
+                    $("#Modal_layout_prj").hide();
+                }
+            })
+        })
+    });
 });
+
 
 input.forEach(element => {
     element.addEventListener('change', function () {
