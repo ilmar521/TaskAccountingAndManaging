@@ -24,29 +24,6 @@ $(document).ready(function () {
                     $("#Modal_layout_task").hide();
                 }
             })
-
-
-//            $('#submit').click(function (event) {
-//                event.preventDefault();
-//                $.post(url, data = $('#ModalForm_edit_task').serialize(), function (
-//                    data) {
-//                    if (data.status == 'ok') {
-//                        $('#Modal_layout').modal('hide');
-//                        location.reload();
-//                    } else {
-//                        var obj = JSON.parse(data);
-//                        for (var key in obj) {
-//                            if (obj.hasOwnProperty(key)) {
-//                                var value = obj[key];
-//                            }
-//                        }
-//                        $('.help-block').remove()
-//                        $('<p class="help-block">' + value + '</p>')
-//                            .insertAfter('#' + key);
-//                        $('.form-group').addClass('has-error')
-//                    }
-//                })
-//            });
         })
     });
 

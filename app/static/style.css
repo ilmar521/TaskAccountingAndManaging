@@ -3,16 +3,57 @@
   box-sizing: border-box;
 }
 
-.btn_edit_task, .btn_edit_prj {
+#button_add_task, #input_add_task {
+  border: none;
+  background-color: rgb(245, 218, 208);
+}
+
+#input_add_task {
+  border-bottom: 1px solid #6C7598;
+  border-radius: 0px;
+}
+
+#input_add_task:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.btn_edit_prj {
     display: none;
-  }
+}
   
-.task:hover .btn_edit_task {
-     display: block; 
+
+.task-span:hover {
+  transform: scale(1.1);
+  transition: transform 0.3s;  
+}
+
+.btn_edit_task {
+  text-decoration: none;  
+}
+
+.task-span {
+  color: black;
+  cursor: pointer;
+}
+
+.task {
+  font-size: large;
+  border-bottom: 1px solid rgb(90, 90, 90);
+  display: flex;
+  justify-content: space-between;
+}
+
+.task:hover {
+  cursor: move;
+  border-bottom: 2px solid rgb(90, 90, 90);
 }
 
 .project:hover .btn_edit_prj {
     display: block; 
+}
+.check-project:checked+label a {
+  display: block; 
 }
 
 .btn-project {
@@ -54,6 +95,11 @@
 }
 
 .fa-sharp:hover {
+  transform: scale(1.4);
+  transition: transform 0.3s;
+}
+
+.fa-pen:hover {
   transform: scale(1.4);
   transition: transform 0.3s;
 }

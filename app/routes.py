@@ -9,6 +9,14 @@ current_project = None
 current_status = None
 
 
+def count_tasks_by_project(project):
+    numbers_of_tasks = {'new': 0, 'in_operation': 0, 'complete': 0,'archive': 0}
+    all_tasks = list(Task.query.filter(Task.project_id == project))
+    for task in all_tasks:
+        numbers_of_tasks[task.status] += 1
+    return numbers_of_tasks
+
+
 @flask_app.route("/", methods=("GET", "POST"))
 def index():
     global current_project, current_status
@@ -32,9 +40,9 @@ def index():
         if current_project is None:
             current_project = all_projects[0].id
         if current_status is None:
-            current_status = 'new'
+            current_status = 'in_operation'
         all_tasks = list(Task.query.filter(Task.project_id == current_project, Task.status == current_status))
-    return flask.render_template('index.html', all_tasks=all_tasks, all_projects=all_projects, current_project=current_project, current_status=current_status)
+    return flask.render_template('index.html', all_tasks=all_tasks, all_projects=all_projects, current_project=current_project, current_status=current_status, numbers_of_tasks=count_tasks_by_project(current_project))
 
 
 @flask_app.route("/change_status/<task_id>/<status>", methods=("GET", "POST"))
