@@ -2,6 +2,7 @@ import flask
 from flask import request
 from app import flask_app, db
 from app.models import Task, Project
+from app.forms import TaskEditForm
 from flask import flash
 
 current_project = None
@@ -54,3 +55,16 @@ def add_project():
         new_project.save_to_db()
         return flask.redirect(flask.url_for('index'))
 
+
+@flask_app.route('/task/<id>/edit', methods=['GET', 'POST'])
+def task_edit(id):
+    task = Task.query.filter_by(id=id).first_or_404()
+    form = TaskEditForm(details=task.details, hours=task.hours)
+    if request.method == 'GET':
+        form.details.data = task.details
+        form.hours.data = task.hours
+    else:
+        task.change_value('details', form.details.data)
+        task.change_value('hours', form.hours.data)
+        # return jsonify(status='ok')
+    return flask.render_template('_task_edit.html', title="Edit task", form=form)

@@ -1,6 +1,7 @@
 import flask
 from config import Config
 import flask_sqlalchemy
+from flask_bootstrap import Bootstrap
 import flask_migrate
 import os
 import json
@@ -13,5 +14,6 @@ flask_app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///'+os.path.join(basedir,
 
 db = flask_sqlalchemy.SQLAlchemy(flask_app)
 migrate = flask_migrate.Migrate(flask_app, db)
+bootstrap = Bootstrap(flask_app)
 
 from app import models, routes

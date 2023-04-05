@@ -75,6 +75,16 @@
       </div>
     </div>
 
+    <!-- Dynamic Modal -->
+    <div class="modal fade" id="Modal_layout" tabindex="-1" role="dialog" aria-labelledby="FormModal" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+             <!-- load content here -->
+            </div>
+        </div>
+    </div>
+    <!-- End Dynamic Modal -->
+
     <form method="POST" id="main_form">
     <div class="container-fluid">
         <div class="row mt-3">
@@ -86,12 +96,15 @@
 
                 <div class="btn-group-vertical w-100" role="group" aria-label="Vertical radio toggle button group">
                     {% for project in all_projects %}
-                        {% if current_project == project['id'] %}
-                            <input type="radio" class="btn-check" name="project" value="{{ project['id'] }}" id="project-{{ project['id'] }}" autocomplete="off" checked>
-                        {% else %}
-                            <input type="radio" class="btn-check" name="project" value="{{ project['id'] }}" id="project-{{ project['id'] }}" autocomplete="off">
-                        {% endif %}
-                        <label class="btn btn-outline-danger" for="project-{{ project['id'] }}">{{ project['name'] }}</label>
+                        <div class="project d-flex w-100">
+                            {% if current_project == project['id'] %}
+                                <input type="radio" class="btn-check" name="project" value="{{ project['id'] }}" id="project-{{ project['id'] }}" autocomplete="off" checked>
+                            {% else %}
+                                <input type="radio" class="btn-check" name="project" value="{{ project['id'] }}" id="project-{{ project['id'] }}" autocomplete="off">
+                            {% endif %}
+                            <label class="btn btn-outline-danger w-100" for="project-{{ project['id'] }}">{{ project['name'] }}</label>
+                            <button class="btn_edit_prj" type="button"> / </button>
+                        </div>
                     {% endfor %}
                 </div>
 
@@ -141,7 +154,11 @@
                             </div>
                         {% endfor %}
                         {% for task in all_tasks %}
-                            <div class="task" draggable='True' id="task-{{ task['id'] }}" style="border: 1px solid;">{{ task['details'] }}</div>
+                            <div class="task d-flex" draggable='True' id="task-{{ task['id'] }}" style="border: 1px solid;">
+                                {{ task['details'] }}
+<!--                                <button class="btn_edit_task" data-bs-toggle="modal" data-bs-whatever="{{ url_for('task_edit', id=task['id']) }}" type="button"> / </button>-->
+                                <a class="btn_edit_task" data-bs-toggle="modal" data-whatever="{{ url_for('task_edit', id=task['id']) }}" href="#"> / </a>
+                            </div>
                         {% endfor %}
                         {% if current_status == 'new' %}
                             <div class="input-group mb-3 mt-4">
