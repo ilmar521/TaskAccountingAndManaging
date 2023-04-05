@@ -1,7 +1,7 @@
 {% from 'bootstrap/wtf.html' import form_field %}
 <form id="ModalForm_edit_task" name="stepForm" class="form" method="post">
-    <div class="modal-header">
-        <h4 class="modal-title">{{ title }}</h4>
+    <div class="modal-header bg-danger bg-gradient">
+        <h4 class="modal-title text-light">{{ title }}</h4>
     </div>
     <div class="modal-body">
         {{ form.hidden_tag() }}
@@ -9,6 +9,6 @@
         {{ form_field(form.hours) }}
     </div>
     <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Delete</button>
+        <button type="button" class="btn btn-primary bg-danger bg-gradient" data-dismiss="modal">Delete</button>
     </div>
 </form>

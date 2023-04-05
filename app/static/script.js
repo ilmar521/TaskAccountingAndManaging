@@ -7,14 +7,9 @@ $(document).ready(function () {
     $('.btn_edit_task').click(function () {
         var url = $(this).data('whatever');
         $.get(url, function (data) {
-            $('#Modal_layout .modal-content').html(data);
-            $('#Modal_layout').modal('show');
-//            $('#Modal_layout').reveal({
-//                        close: function () { alert("модальное окно начинает скрываться"); },
-//                        closed: function () { alert("модальное окно только что скрылось"); },
-//                    });
-
-            $("#Modal_layout").on('hidden.bs.modal', function (e) {
+            $('#Modal_layout_task .modal-content').html(data);
+            $('#Modal_layout_task').modal('show');
+            $("#Modal_layout_task").on('hidden.bs.modal', function (e) {
                 $.post(url, data = $('#ModalForm_edit_task').serialize());
                 $("#main_form").submit();
             });
