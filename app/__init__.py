@@ -4,7 +4,6 @@ import flask_sqlalchemy
 from flask_bootstrap import Bootstrap
 import flask_migrate
 import os
-import json
 
 flask_app = flask.Flask(__name__)
 flask_app.config.from_object(Config)
