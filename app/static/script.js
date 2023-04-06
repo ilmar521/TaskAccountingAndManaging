@@ -12,8 +12,12 @@ $(document).ready(function () {
             $('#Modal_layout_task .modal-content').html(data);
             $('#Modal_layout_task').modal('show');
             $("#Modal_layout_task").on('hidden.bs.modal', function (e) {
-                $.post(url, data = $('#ModalForm_edit_task').serialize());
-                $("#main_form").submit();
+                $.post(url, data = $('#ModalForm_edit_task').serialize(), function (
+                    data) {
+                    if (data.status == 'ok') {
+                        $("#main_form").submit();
+                    }
+                 })
             });
             $('#delete_task').click(function (event) {
                 event.preventDefault();
@@ -34,8 +38,12 @@ $(document).ready(function () {
             $('#Modal_layout_prj .modal-content').html(data);
             $('#Modal_layout_prj').modal('show');
             $("#Modal_layout_prj").on('hidden.bs.modal', function (e) {
-                $.post(url, data = $('#ModalForm_edit_project').serialize());
-                $("#main_form").submit();
+                $.post(url, data = $('#ModalForm_edit_project').serialize(), function (
+                    data) {
+                    if (data.status == 'ok') {
+                        $("#main_form").submit();
+                    }
+                 })
             });
             $('#delete_project').click(function (event) {
                 event.preventDefault();

@@ -3,7 +3,7 @@ from flask import request
 from app import flask_app, db
 from app.models import Task, Project
 from app.forms import TaskEditForm, ProjectEditForm
-from flask import flash
+from flask import flash, jsonify
 
 current_project = None
 current_status = None
@@ -74,7 +74,7 @@ def task_edit(id):
     else:
         task.change_value('details', form.details.data)
         task.change_value('hours', form.hours.data)
-        # return jsonify(status='ok')
+        return jsonify(status='ok')
     return flask.render_template('_task_edit.html', title="Edit task", form=form)
 
 
@@ -98,6 +98,7 @@ def project_edit(id):
     else:
         project.change_value('name', form.name.data)
         project.change_value('hour_rate', form.hour_rate.data)
+        return jsonify(status='ok')
     return flask.render_template('_project_edit.html', title="Edit project", form=form)
 
 
