@@ -15,29 +15,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.14.0/jquery.validate.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-<!--    <script type=text/javascript>-->
-<!--        $(function() {-->
-
-<!--            $("#form_project_adding").validate({-->
-<!--            rules: {-->
-<!--                name_new_project: {-->
-<!--                required: true,-->
-<!--                },-->
-<!--                hour_rate: {-->
-<!--                required: true,-->
-<!--                }-->
-<!--            },-->
-<!--            messages: {-->
-<!--                pName: {-->
-<!--                required: "Please enter name of project",-->
-<!--                },-->
-<!--                hour_rate: {-->
-<!--                required: "Please enter hour rate of this project",-->
-<!--                }-->
-<!--            }-->
-<!--            });-->
-<!--        });-->
-<!--    </script>-->
 
     <nav class="navbar navbar-expand-lg bg-danger bg-gradient">
         <div class="container-fluid">
@@ -110,17 +87,14 @@
                                 <input type="radio" class="btn-check check-project" name="project" value="{{ project['id'] }}" id="project-{{ project['id'] }}" autocomplete="off">
                             {% endif %}
                             <label class="btn btn-project btn-outline-danger bg-gradient w-100" for="project-{{ project['id'] }}">{{ project['name'] }} <a class="btn_edit_prj" data-bs-toggle="modal" data-whatever="{{ url_for('project_edit', id=project['id']) }}" data-id="{{ project['id'] }}" href="#"><i class="fa-solid fa-pen fa-sm"></i></a></label>
-                            
                         </div>
                     {% endfor %}
                 </div>
-
             </div>
 
             <div class="col-10 tasks">
                 <div class="row">
                     <div class="col-3 status">
-                        <!-- <div class="card bg-light text-center" style="height: 50px;">New</div> -->
                         {% if current_status == 'new' %}
                             <input type="radio" class="btn-check check-status" name="status" value="new" id="status_new" autocomplete="off" checked>
                         {% else %}
@@ -191,7 +165,6 @@
                         {% if current_status == 'new' %}
                             <div class="input-group mb-3 mt-4">
                                 <input name="task-name" type="text" class="form-control" placeholder="new task" aria-label="Recipient's username" aria-describedby="button-addon2" id="input_add_task">
-                                <!-- <input class="btn btn-outline-secondary" type="submit" name ="button_add_task" value="ADD">     -->
                                 <button type="submit" name ="button_add_task" id="button_add_task"><i class="fa-sharp fa-solid fa-plus fa-lg" style="color: #dd4151;"></i> </button>    
                             </div>
                         {% endif %}
