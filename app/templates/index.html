@@ -155,9 +155,9 @@
                         {% for task in all_tasks %}
                             <div class="task my-1" draggable='True' id="task-{{ task['id'] }}">
                                 {% if task['hours'] > 0 %}
-                                    <a class="btn_edit_task" data-bs-toggle="modal" data-whatever="{{ url_for('task_edit', id=task['id']) }}" data-id="{{ task['id'] }}" href="#"><span class="task-span">{{ task['details'] + ' - (' + task['hours']|string + ')' }}</span></a>
+                                    <a class="btn_edit_task" data-bs-toggle="modal" data-whatever="{{ url_for('task_edit', id=task['id']) }}" data-id="{{ task['id'] }}" id="{{ task['id'] }}" href="#"><span class="task-span">{{ task['details'] + ' - (' + task['hours']|string + ')' }}</span></a>
                                 {% else %}
-                                    <a class="btn_edit_task" data-bs-toggle="modal" data-whatever="{{ url_for('task_edit', id=task['id']) }}" data-id="{{ task['id'] }}" href="#"><span class="task-span">{{ task['details'] }}</span></a>
+                                    <a class="btn_edit_task" data-bs-toggle="modal" data-whatever="{{ url_for('task_edit', id=task['id']) }}" data-id="{{ task['id'] }}" id="{{ task['id'] }}" href="#"><span class="task-span">{{ task['details'] }}</span></a>
                                 {% endif %}
                                 <!-- <i class="fa-solid fa-pen fa-sm" style="color: #e14150;"></i> -->
                             </div>

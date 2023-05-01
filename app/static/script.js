@@ -80,6 +80,6 @@ statuses.forEach(element => {
         event.preventDefault();
         let id = event.dataTransfer.getData("id");
         $.post(`/change_status/${id}/${event.target.id}`);
-        $("#main_form").submit();
+        setTimeout(() => $("#main_form").submit(), 10);
     })
 });

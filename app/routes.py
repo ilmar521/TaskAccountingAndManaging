@@ -51,7 +51,7 @@ def change_status(task_id, status):
     status = status.replace('label_', '')
     task = Task.query.filter(Task.id == int(task_id)).first()
     task.change_value('status', status)
-    return ()
+    return ""
 
 
 @flask_app.route("/add_project", methods=("GET", "POST"))
@@ -85,7 +85,7 @@ def delete_task(task_id):
         current_db_sessions = db.session.object_session(task)
         current_db_sessions.delete(task)
         current_db_sessions.commit()
-    return ()
+    return ""
 
 
 @flask_app.route('/project/<id>/edit', methods=['GET', 'POST'])
@@ -114,4 +114,4 @@ def delete_project(project_id):
             current_db_sessions = db.session.object_session(task)
             current_db_sessions.delete(task)
             current_db_sessions.commit()
-    return ()
+    return ""
