@@ -22,7 +22,36 @@
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent"></div>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+              <ul class="navbar-nav me-auto mb-2 mb-lg-0 text-light">
+                {% if current_user.is_authenticated %}
+                <li class="nav-item">
+                    <a class="nav-link text-light" href="{{ url_for('auth.profile') }}">
+                        Profile
+                    </a>
+                </li>
+                {% endif %}
+                {% if not current_user.is_authenticated %}
+                <li class="nav-item">
+                    <a class="nav-link text-light" href="{{ url_for('auth.login') }}">
+                        Login
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ url_for('auth.signup') }}" class="nav-link text-light">
+                        Sign Up
+                    </a>
+                </li>
+                {% endif %}
+                {% if current_user.is_authenticated %}
+                <li class="nav-item">
+                    <a href="{{ url_for('auth.logout') }}" class="nav-link text-light">
+                        Logout
+                    </a>
+                </li>
+                {% endif %}
+              </ul>
+            </div>
         </div>
     </nav>
 
