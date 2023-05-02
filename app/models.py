@@ -7,6 +7,8 @@ class User(UserMixin, db.Model):
     email = db.Column(db.String(100), unique=True)
     password = db.Column(db.String(100))
     name = db.Column(db.String(1000))
+    admin = db.Column(db.Boolean)
+    tasks = db.relationship('Task', backref='user', lazy='dynamic')
 
 
 class Task(db.Model):
@@ -15,6 +17,7 @@ class Task(db.Model):
     status = db.Column(db.String(20))
     hours = db.Column(db.Float, default=0)
     project_id = db.Column(db.Integer, db.ForeignKey('project.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
     def __getitem__(self, item):
         return getattr(self, item)

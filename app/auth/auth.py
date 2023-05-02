@@ -38,7 +38,7 @@ def signup():
 @auth.route('/signup', methods=['POST'])
 def signup_post():
     email = request.form.get('email')
-    username = request.form.get('name')
+    name = request.form.get('name')
     password = request.form.get('password')
 
     user = User.query.filter_by(
@@ -48,7 +48,7 @@ def signup_post():
         flash('Email address already exists')
         return redirect(url_for('auth.signup'))
 
-    new_user = User(email=email, username=username, password=generate_password_hash(password, method='sha256'))
+    new_user = User(email=email, name=name, password=generate_password_hash(password, method='sha256'))
 
     db.session.add(new_user)
     db.session.commit()
@@ -59,7 +59,7 @@ def signup_post():
 @auth.route('/profile')
 @login_required
 def profile():
-    return render_template('profile.html', name=current_user.username)
+    return render_template('profile.html', name=current_user.name)
 
 
 @auth.route('/logout')

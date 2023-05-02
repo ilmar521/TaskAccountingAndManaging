@@ -1,9 +1,8 @@
 import flask
-from flask import request
 from app import flask_app, db
 from app.models import Task, Project
 from app.forms import TaskEditForm, ProjectEditForm
-from flask import flash, jsonify
+from flask import flash, jsonify, redirect, url_for, render_template, request
 from flask_login import login_user, login_required, logout_user, current_user
 
 current_project = None
@@ -21,29 +20,35 @@ def count_tasks_by_project(project):
 @flask_app.route("/", methods=("GET", "POST"))
 def index():
     global current_project, current_status
+
+    if not current_user.is_authenticated:
+        return redirect(url_for('auth.login'))
+
     if request.method == "POST":
         projects = request.form.getlist('project')
         statuses = request.form.getlist('status')
-        current_project = int(projects[0])
+        current_project = 0 if len(projects) == 0 else int(projects[0])
         current_status = statuses[0]
         task_name = request.form.get("task-name")
         task_adding = request.form.get("button_add_task")
         if task_adding is not None:
             if task_name == '':
                 flash('Enter the name of task!')
+            elif current_project == 0:
+                flash('Select project for adding new task!')
             else:
-                new_task = Task(details=task_name, status='new', hours=0, project_id=current_project)
+                new_task = Task(details=task_name, status='new', hours=0, project_id=current_project, user_id=current_user)
                 new_task.save_task_to_db()
         all_projects = Project.query.all()
-        all_tasks = list(Task.query.filter(Task.project_id == current_project, Task.status == current_status))
+        all_tasks = list(Task.query.filter(Task.project_id == current_project, Task.status == current_status, Task.user_id == current_user))
     else:
         all_projects = Project.query.all()
         if current_project is None:
-            current_project = all_projects[0].id
+            current_project = 0 if len(all_projects) == 0 else all_projects[0].id
         if current_status is None:
             current_status = 'in_operation'
-        all_tasks = list(Task.query.filter(Task.project_id == current_project, Task.status == current_status))
-    return flask.render_template('index.html', all_tasks=all_tasks, all_projects=all_projects, current_project=current_project, current_status=current_status, numbers_of_tasks=count_tasks_by_project(current_project))
+        all_tasks = list(Task.query.filter(Task.project_id == current_project, Task.status == current_status, Task.user_id == current_user))
+    return render_template('index.html', all_tasks=all_tasks, all_projects=all_projects, current_project=current_project, current_status=current_status, numbers_of_tasks=count_tasks_by_project(current_project))
 
 
 @flask_app.route("/change_status/<task_id>/<status>", methods=("GET", "POST"))
@@ -62,7 +67,7 @@ def add_project():
         hour_rate = request.form.get("hour_rate")
         new_project = Project(name=name_new_project, hour_rate=hour_rate)
         new_project.save_to_db()
-        return flask.redirect(flask.url_for('index'))
+        return redirect(url_for('index'))
 
 
 @flask_app.route('/task/<id>/edit', methods=['GET', 'POST'])
@@ -76,7 +81,7 @@ def task_edit(id):
         task.change_value('details', form.details.data)
         task.change_value('hours', form.hours.data)
         return jsonify(status='ok')
-    return flask.render_template('_task_edit.html', title="Edit task", form=form)
+    return render_template('_task_edit.html', title="Edit task", form=form)
 
 
 @flask_app.route("/delete_task/<task_id>", methods=("GET", "POST"))
@@ -100,7 +105,7 @@ def project_edit(id):
         project.change_value('name', form.name.data)
         project.change_value('hour_rate', form.hour_rate.data)
         return jsonify(status='ok')
-    return flask.render_template('_project_edit.html', title="Edit project", form=form)
+    return render_template('_project_edit.html', title="Edit project", form=form)
 
 
 @flask_app.route("/delete_project/<project_id>", methods=("GET", "POST"))
