@@ -11,7 +11,7 @@ current_status = None
 
 def count_tasks_by_project(project):
     numbers_of_tasks = {'new': 0, 'in_operation': 0, 'complete': 0,'archive': 0}
-    all_tasks = list(Task.query.filter(Task.project_id == project))
+    all_tasks = list(Task.query.filter(Task.project_id == project, Task.user_id == current_user.id))
     for task in all_tasks:
         numbers_of_tasks[task.status] += 1
     return numbers_of_tasks
@@ -37,17 +37,17 @@ def index():
             elif current_project == 0:
                 flash('Select project for adding new task!')
             else:
-                new_task = Task(details=task_name, status='new', hours=0, project_id=current_project, user_id=current_user)
+                new_task = Task(details=task_name, status='new', hours=0, project_id=current_project, user_id=current_user.id)
                 new_task.save_task_to_db()
         all_projects = Project.query.all()
-        all_tasks = list(Task.query.filter(Task.project_id == current_project, Task.status == current_status, Task.user_id == current_user))
+        all_tasks = list(Task.query.filter(Task.project_id == current_project, Task.status == current_status, Task.user_id == current_user.id))
     else:
         all_projects = Project.query.all()
         if current_project is None:
             current_project = 0 if len(all_projects) == 0 else all_projects[0].id
         if current_status is None:
             current_status = 'in_operation'
-        all_tasks = list(Task.query.filter(Task.project_id == current_project, Task.status == current_status, Task.user_id == current_user))
+        all_tasks = list(Task.query.filter(Task.project_id == current_project, Task.status == current_status, Task.user_id == current_user.id))
     return render_template('index.html', all_tasks=all_tasks, all_projects=all_projects, current_project=current_project, current_status=current_status, numbers_of_tasks=count_tasks_by_project(current_project))
 
 
