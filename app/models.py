@@ -1,9 +1,5 @@
 from app import flask_app, db
 from flask_login import UserMixin
-from sqlalchemy_file import FileField
-from sqlalchemy.ext.declarative import declarative_base
-
-Base = declarative_base()
 
 
 class AttachmentProjects(db.Model):
