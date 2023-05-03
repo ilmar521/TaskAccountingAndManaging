@@ -1,5 +1,23 @@
 from app import flask_app, db
 from flask_login import UserMixin
+from sqlalchemy_file import FileField
+from sqlalchemy.ext.declarative import declarative_base
+
+Base = declarative_base()
+
+
+class AttachmentProjects(db.Model):
+    id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    name = db.Column(db.String(250))
+    content = db.Column(db.LargeBinary)
+    project_id = db.Column(db.Integer, db.ForeignKey("project.id"))
+
+
+class AttachmentTasks(db.Model):
+    id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    name = db.Column(db.String(250))
+    content = db.Column(db.LargeBinary)
+    task_id = db.Column(db.Integer, db.ForeignKey("task.id"))
 
 
 class User(UserMixin, db.Model):
@@ -14,10 +32,12 @@ class User(UserMixin, db.Model):
 class Task(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     details = db.Column(db.Text)
+    description = db.Column(db.Text)
     status = db.Column(db.String(20))
     hours = db.Column(db.Float, default=0)
     project_id = db.Column(db.Integer, db.ForeignKey('project.id'))
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    attachments = db.relationship('AttachmentTasks', backref='project', lazy='dynamic')
 
     def __getitem__(self, item):
         return getattr(self, item)
@@ -43,6 +63,7 @@ class Project(db.Model):
     name = db.Column(db.String(200))
     hour_rate = db.Column(db.Integer)
     tasks = db.relationship('Task', backref='project', lazy='dynamic')
+    attachments = db.relationship('AttachmentProjects', backref='project', lazy='dynamic')
 
     def __getitem__(self, item):
         return getattr(self, item)
