@@ -6,7 +6,29 @@
     <div class="modal-body">
         {{ form.hidden_tag() }}
         {{ form_field(form.details) }}
+        {{ form_field(form.description) }}
         {{ form_field(form.hours) }}
+
+        <div class="container-fluid my-2">
+          <ul class="nav nav-tabs" id="myTab">
+              <li class="nav-item">
+                  <a href="#notes" class="nav-link active" data-bs-toggle="tab">Notes</a>
+              </li>
+              <li class="nav-item">
+                  <a href="#files" class="nav-link" data-bs-toggle="tab">Files</a>
+              </li>
+          </ul>
+          <div class="tab-content">
+              <div class="tab-pane fade show active" id="notes">
+                  <h5 class="mt-2">Additional notes for the task</h5>
+              </div>
+              <div class="tab-pane fade" id="files">
+                  <h5 class="mt-2">Additional files for the task</h5>
+                  {{ form_field(form.upload) }}
+              </div>
+          </div>
+      </div>
+  
     </div>
     <div class="modal-footer">
         <button type="button" id="delete_task" class="btn text-light bg-danger bg-gradient" data-dismiss="modal">Delete</button>
