@@ -1,6 +1,26 @@
 {% from 'bootstrap/wtf.html' import form_field %}
 <form id="ModalForm_edit_task" name="stepForm" class="form" method="post">
 
+<!--    <script>-->
+<!--      $(document).ready(function() {-->
+<!--        $('#upload-button').click(function (event) {-->
+<!--          event.preventDefault();-->
+<!--          var formData = new FormData(this);-->
+<!--          $.ajax({-->
+<!--            url: $(this).attr('action'),-->
+<!--            type: $(this).attr('method'),-->
+<!--            data: formData,-->
+<!--            processData: false,-->
+<!--            contentType: false,-->
+<!--            success: function(response) {-->
+<!--              $('#file-list').append('<li>' + response.name + '</li>');-->
+<!--              $('#upload-form')[0].reset();-->
+<!--            }-->
+<!--          });-->
+<!--        });-->
+<!--      });-->
+<!--    </script>-->
+
     <div class="modal-header bg-danger bg-gradient">
         <h4 class="modal-title text-light">{{ title }}</h4>
     </div>
@@ -22,68 +42,108 @@
           <div class="tab-content">
               <div class="tab-pane fade show active" id="notes">
                   <h5 class="mt-2">Additional notes for the task</h5>
-                     <div class="container">
-
-                     <div class="qa-message-list">
-
-                    <div class="message-item">
-                     <div class="message-inner">
-                     <div class="message-head clearfix">
-                     <div class="user-detail">
-                     <h5 class="handle">Manager note</h5>
-                     <div class="post-meta">
-                     <div class="asker-meta">
-                     <span class="qa-message-what"></span>
-                     <span class="qa-message-when">
-                     <span class="qa-message-when-data">Nov 24, 2013</span>
-                     </span>
-                     <span class="qa-message-who">
-                     <span class="qa-message-who-pad">by </span>
-                     <span class="qa-message-who-data"><a href="#">Gopal K Verma</a></span>
-                     </span>
-                     </div>
-                     </div>
-                     </div>
-                     </div>
-                     <div class="qa-message-content">
-                     Gopal is an MCA from GJU (Hisar) and a Cisco Certified Network Professional. He has more than 11 years of experience in core data networking and telecommunications. He develops contents for Computer Science related subjects. He is also involved in developing Apps for various Mobile devices.
-                     </div>
-                     </div>
-                     </div>
-
-                    <div class="message-item">
-                     <div class="message-inner">
-                     <div class="message-head clearfix">
-                     <div class="user-detail">
-                     <h5 class="handle">Project Manager note</h5>
-                     <div class="post-meta">
-                     <div class="asker-meta">
-                     <span class="qa-message-what"></span>
-                     <span class="qa-message-when">
-                     <span class="qa-message-when-data">Oct 25, 2013</span>
-                     </span>
-                     <span class="qa-message-who">
-                     <span class="qa-message-who-pad">by </span>
-                     <span class="qa-message-who-data"><a href="#">Omer</a></span>
-                     </span>
-                     </div>
-                     </div>
-                     </div>
-                     </div>
-                     <div class="qa-message-content">
-                     Omer has 10+ years of experience, with 4+ years in project management overlapping with 8+ years in Design. He has PMP, 6 Sigma Green Belt and Intellectual Property credentials. Across his career, he has worked in designing training modules, team building events, and driving teams towards results aligned with strategic objectives.
-                     </div>
-                     </div>
-                     </div>
-
-                     </div><!-- ./qa-message-list -->
-
-                     </div><!-- ./container -->
+                    <div class="container">           
+                      <div class="qa-message-list">
+                        <div class="message-item">
+                          <div class="message-inner">
+                            <div class="message-head clearfix">
+                              <div class="user-detail">
+                                <h5 class="handle">Manager note</h5>
+                                <div class="post-meta">
+                                  <div class="asker-meta">
+                                    <span class="qa-message-what"></span>
+                                    <span class="qa-message-when">
+                                      <span class="qa-message-when-data">Nov 24, 2013</span>
+                                    </span>
+                                    <span class="qa-message-who">
+                                      <span class="qa-message-who-pad">by </span>
+                                      <span class="qa-message-who-data"><a href="#">Gopal K Verma</a></span>
+                                    </span>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="qa-message-content">
+                              Gopal is an MCA from GJU (Hisar) and a Cisco Certified Network Professional. He has more than 11 years of
+                              experience in core data networking and telecommunications. He develops contents for Computer Science related
+                              subjects. He is also involved in developing Apps for various Mobile devices.
+                            </div>
+                          </div>
+                        </div>
+                    
+                        <div class="message-item">
+                          <div class="message-inner">
+                            <div class="message-head clearfix">
+                              <div class="user-detail">
+                                <h5 class="handle">Project Manager note</h5>
+                                <div class="post-meta">
+                                  <div class="asker-meta">
+                                    <span class="qa-message-what"></span>
+                                    <span class="qa-message-when">
+                                      <span class="qa-message-when-data">Oct 25, 2013</span>
+                                    </span>
+                                    <span class="qa-message-who">
+                                      <span class="qa-message-who-pad">by </span>
+                                      <span class="qa-message-who-data"><a href="#">Omer</a></span>
+                                    </span>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="qa-message-content">
+                              Omer has 10+ years of experience, with 4+ years in project management overlapping with 8+ years in Design. He
+                              has PMP, 6 Sigma Green Belt and Intellectual Property credentials. Across his career, he has worked in
+                              designing training modules, team building events, and driving teams towards results aligned with strategic
+                              objectives.
+                            </div>
+                          </div>
+                        </div>
+                      </div>         
+                    </div>
 
               </div>
               <div class="tab-pane fade" id="files">
                   <h5 class="mt-2">Additional files for the task</h5>
-                  {{ form_field(form.upload) }}
+<!--                  {{ form_field(form.upload) }}-->
+<!--                      <form id="upload-form" method="POST" action="" enctype="multipart/form-data">-->
+<!--                          <input type="file" name="file">-->
+<!--                          <input type="button" id="upload-button" value="Upload">-->
+<!--                      </form>-->
+<!--                        {{ form_field(form.upload) }}-->
+<!--                        <input type="button" id="upload-button" value="Upload">-->
+                        <form>
+                          <input type="file" id="file-input">
+                          <button type="button" id="button_upload" onclick="uploadFile()" data-id-task="{{ task['id'] }}">Upload</button>
+                        </form>
+
+                        <script>
+                          function uploadFile() {
+                            // Создаем объект FormData
+                            var formData = new FormData();
+                            var idTask = document.querySelector('#button_upload').getAttribute('data-id-task');
+
+                            // Добавляем файл в объект FormData
+                            var fileInput = document.getElementById('file-input');
+                            formData.append('file', fileInput.files[0]);
+
+                            // Отправляем объект FormData на сервер
+                            var xhr = new XMLHttpRequest();
+                            xhr.open('POST', `/upload/${idTask}`, true);
+                            xhr.onload = function () {
+                              // Обработка ответа от сервера
+                              var response = JSON.parse(xhr.responseText);
+                              var fileList = document.getElementById('file-list');
+                              fileList.innerHTML += '<p>' + response.message + '</p>';
+                            };
+                            xhr.send(formData);
+                          }
+                        </script>
+
+                    <ul id="file-list">
+                      {% for file in files %}
+                        <li>{{ file.name }}</li>
+                      {% endfor %}
+                    </ul>
               </div>
           </div>
       </div>

@@ -19,6 +19,16 @@ $(document).ready(function () {
                     }
                  })
             });
+
+//            $('#upload-button').click(function (event) {
+//              event.preventDefault();
+//              $.post(`/upload/${id_task}`, data = $('#ModalForm_edit_task').serialize(), function (
+//                    response) {
+//                      $('#file-list').append('<li>' + response.name + '</li>');
+//                      $('#upload-form')[0].reset();
+//                 });
+//            });
+
             $('#delete_task').click(function (event) {
                 event.preventDefault();
                 result = confirm('Are you sure?');

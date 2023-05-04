@@ -1,9 +1,9 @@
 import flask
 from app import flask_app, db
-from app.models import Task, Project
+from app.models import Task, Project, AttachmentProjects, AttachmentTasks
 from app.forms import TaskEditForm, ProjectEditForm
 from flask import flash, jsonify, redirect, url_for, render_template, request
-from flask_login import login_user, login_required, logout_user, current_user
+from flask_login import current_user
 
 current_project = None
 current_status = None
@@ -15,6 +15,17 @@ def count_tasks_by_project(project):
     for task in all_tasks:
         numbers_of_tasks[task.status] += 1
     return numbers_of_tasks
+
+@flask_app.route('/upload/<task_id>', methods=['POST'])
+def upload_file(task_id):
+    # Получаем файл из запроса
+    file = request.files['file']
+
+    # Обрабатываем файл
+    # ...
+
+    # Отправляем ответ
+    return jsonify({'message': 'File uploaded successfully'})
 
 
 @flask_app.route("/", methods=("GET", "POST"))
@@ -73,6 +84,7 @@ def add_project():
 @flask_app.route('/task/<id>/edit', methods=['GET', 'POST'])
 def task_edit(id):
     task = Task.query.filter_by(id=id).first_or_404()
+    files = list(AttachmentTasks.query.filter(AttachmentTasks.task_id == id))
     form = TaskEditForm(details=task.details, hours=task.hours, description=task.description)
     if request.method == 'GET':
         form.details.data = task.details
@@ -82,7 +94,7 @@ def task_edit(id):
         task.change_value('hours', form.hours.data)
         # filename = images.save(form.upload.data)
         return jsonify(status='ok')
-    return render_template('_task_edit.html', title="Edit task", form=form)
+    return render_template('_task_edit.html', title="Edit task", form=form, files=files, task=task)
 
 
 @flask_app.route("/delete_task/<task_id>", methods=("GET", "POST"))
@@ -122,3 +134,8 @@ def delete_project(project_id):
             current_db_sessions.delete(task)
             current_db_sessions.commit()
     return ""
+
+
+@flask_app.route('/health')
+def health():
+    return "ok"
