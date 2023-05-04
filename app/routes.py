@@ -2,8 +2,11 @@ import flask
 from app import flask_app, db
 from app.models import Task, Project, AttachmentProjects, AttachmentTasks
 from app.forms import TaskEditForm, ProjectEditForm
-from flask import flash, jsonify, redirect, url_for, render_template, request
+from flask import flash, jsonify, redirect, url_for, render_template, request, send_file
 from flask_login import current_user
+from io import BytesIO
+import mimetypes
+
 
 current_project = None
 current_status = None
@@ -16,16 +19,45 @@ def count_tasks_by_project(project):
         numbers_of_tasks[task.status] += 1
     return numbers_of_tasks
 
+
 @flask_app.route('/upload/<task_id>', methods=['POST'])
 def upload_file(task_id):
-    # Получаем файл из запроса
     file = request.files['file']
+    attachment = AttachmentTasks(name=file.filename, content=file.read(), task_id=task_id)
+    db.session.add(attachment)
+    db.session.commit()
+    return jsonify({'name': attachment.name, 'id': attachment.id})
 
-    # Обрабатываем файл
-    # ...
 
-    # Отправляем ответ
-    return jsonify({'message': 'File uploaded successfully'})
+@flask_app.route('/open/<file_id>', methods=['GET'])
+def open_file(file_id):
+    file = AttachmentTasks.query.get_or_404(file_id)
+    mimetype = mimetypes.guess_type(file.name)[0]
+    file_data = BytesIO(file.content)
+    return send_file(
+        file_data,
+        mimetype=mimetype,
+        as_attachment=False,
+        conditional=True
+    )
+
+
+@flask_app.route('/download/<file_id>', methods=['POST'])
+def download_file(file_id):
+    file = request.files['file']
+    attachment = AttachmentTasks(name=file.filename, content=file.read(), task_id=task_id)
+    db.session.add(attachment)
+    db.session.commit()
+    return jsonify({'name': attachment.name, 'id': attachment.id})
+
+
+@flask_app.route('/delete/<file_id>', methods=['POST'])
+def delete_file(file_id):
+    file = request.files['file']
+    attachment = AttachmentTasks(name=file.filename, content=file.read(), task_id=task_id)
+    db.session.add(attachment)
+    db.session.commit()
+    return jsonify({'name': attachment.name, 'id': attachment.id})
 
 
 @flask_app.route("/", methods=("GET", "POST"))

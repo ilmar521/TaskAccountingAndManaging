@@ -43,12 +43,11 @@
               <div class="tab-pane fade show active" id="notes">
                   <h5 class="mt-2">Additional notes for the task</h5>
                     <div class="container">           
-                      <div class="qa-message-list">
+                      <div class="qa-message-list scroll-part">
                         <div class="message-item">
                           <div class="message-inner">
                             <div class="message-head clearfix">
                               <div class="user-detail">
-                                <h5 class="handle">Manager note</h5>
                                 <div class="post-meta">
                                   <div class="asker-meta">
                                     <span class="qa-message-what"></span>
@@ -75,7 +74,6 @@
                           <div class="message-inner">
                             <div class="message-head clearfix">
                               <div class="user-detail">
-                                <h5 class="handle">Project Manager note</h5>
                                 <div class="post-meta">
                                   <div class="asker-meta">
                                     <span class="qa-message-what"></span>
@@ -104,46 +102,26 @@
               </div>
               <div class="tab-pane fade" id="files">
                   <h5 class="mt-2">Additional files for the task</h5>
-<!--                  {{ form_field(form.upload) }}-->
-<!--                      <form id="upload-form" method="POST" action="" enctype="multipart/form-data">-->
-<!--                          <input type="file" name="file">-->
-<!--                          <input type="button" id="upload-button" value="Upload">-->
-<!--                      </form>-->
-<!--                        {{ form_field(form.upload) }}-->
-<!--                        <input type="button" id="upload-button" value="Upload">-->
-                        <form>
+                        <form id="upload-form">
                           <input type="file" id="file-input">
                           <button type="button" id="button_upload" onclick="uploadFile()" data-id-task="{{ task['id'] }}">Upload</button>
                         </form>
 
-                        <script>
-                          function uploadFile() {
-                            // Создаем объект FormData
-                            var formData = new FormData();
-                            var idTask = document.querySelector('#button_upload').getAttribute('data-id-task');
+                      <div class="container scroll-part">
+                        <ul id="file-list" class="list-group">
+                            {% for file in files %}
+                              <li class="list-group-item d-flex justify-content-between align-items-center">
+                                {{ file.name }}
+                                <div class="btn-group" role="group" aria-label="File Actions">
+                                  <button type="button" onclick="openFile({{ file['id'] }})" data-id-file="{{ file['id'] }}" class="btn btn-primary"><i class="fas fa-eye"></i></button>
+                                  <button type="button" data-id-file="{{ file['id'] }}" class="btn btn-secondary"><i class="fas fa-download"></i></button>
+                                  <button type="button" data-id-file="{{ file['id'] }}" class="btn btn-danger"><i class="fas fa-trash"></i></button>
+                                </div>
+                              </li>
+                            {% endfor %}
+                        </ul>
+                      </div>
 
-                            // Добавляем файл в объект FormData
-                            var fileInput = document.getElementById('file-input');
-                            formData.append('file', fileInput.files[0]);
-
-                            // Отправляем объект FormData на сервер
-                            var xhr = new XMLHttpRequest();
-                            xhr.open('POST', `/upload/${idTask}`, true);
-                            xhr.onload = function () {
-                              // Обработка ответа от сервера
-                              var response = JSON.parse(xhr.responseText);
-                              var fileList = document.getElementById('file-list');
-                              fileList.innerHTML += '<p>' + response.message + '</p>';
-                            };
-                            xhr.send(formData);
-                          }
-                        </script>
-
-                    <ul id="file-list">
-                      {% for file in files %}
-                        <li>{{ file.name }}</li>
-                      {% endfor %}
-                    </ul>
               </div>
           </div>
       </div>

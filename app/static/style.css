@@ -220,3 +220,8 @@
  font-size: 12px;
  line-height: 22px;
  }
+
+.scroll-part {
+  height:250px;
+  overflow-y: scroll;
+}

@@ -3,6 +3,28 @@ let input = document.querySelectorAll('input.btn-check');
 let tasks = document.querySelectorAll('.task');
 let statuses = document.querySelectorAll('.status');
 
+function openFile(fileId) {
+//    window.location.href = '/open/' + fileId;
+    window.open('/open/' + fileId, '_blank');
+}
+
+function uploadFile() {
+    var formData = new FormData();
+    var idTask = document.getElementById('button_upload').getAttribute('data-id-task');
+
+    var fileInput = document.getElementById('file-input');
+    formData.append('file', fileInput.files[0]);
+
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', `/upload/${idTask}`, true);
+    xhr.onload = function () {
+      var response = JSON.parse(xhr.responseText);
+      var fileList = document.getElementById('file-list');
+        fileList.append('<li>' + response.name + '</li>');
+        $('#upload-form')[0].reset();
+    };
+    xhr.send(formData);
+}
 
 $(document).ready(function () {
     $('.btn_edit_task').click(function () {
