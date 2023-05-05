@@ -4,7 +4,6 @@ let tasks = document.querySelectorAll('.task');
 let statuses = document.querySelectorAll('.status');
 
 function openFile(fileId) {
-//    window.location.href = '/open/' + fileId;
     window.open('/open/' + fileId, '_blank');
 }
 
@@ -26,6 +25,7 @@ function uploadFile() {
     xhr.send(formData);
 }
 
+
 $(document).ready(function () {
     $('.btn_edit_task').click(function () {
         var url = $(this).data('whatever');
@@ -41,15 +41,6 @@ $(document).ready(function () {
                     }
                  })
             });
-
-//            $('#upload-button').click(function (event) {
-//              event.preventDefault();
-//              $.post(`/upload/${id_task}`, data = $('#ModalForm_edit_task').serialize(), function (
-//                    response) {
-//                      $('#file-list').append('<li>' + response.name + '</li>');
-//                      $('#upload-form')[0].reset();
-//                 });
-//            });
 
             $('#delete_task').click(function (event) {
                 event.preventDefault();
