@@ -114,7 +114,7 @@
                                 {{ file.name }}
                                 <div class="btn-group" role="group" aria-label="File Actions">
                                   <button type="button" onclick="openFile({{ file['id'] }})" data-id-file="{{ file['id'] }}" class="btn btn-primary"><i class="fas fa-eye"></i></button>
-                                  <button type="button" data-id-file="{{ file['id'] }}" class="btn btn-secondary"><i class="fas fa-download"></i></button>
+                                  <button type="button" onclick="downloadFile({{ file['id'] }})" data-id-file="{{ file['id'] }}" class="btn btn-secondary"><i class="fas fa-download"></i></button>
                                   <button type="button" data-id-file="{{ file['id'] }}" class="btn btn-danger"><i class="fas fa-trash"></i></button>
                                 </div>
                               </li>

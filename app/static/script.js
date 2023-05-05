@@ -7,6 +7,10 @@ function openFile(fileId) {
     window.open('/open/' + fileId, '_blank');
 }
 
+function downloadFile(fileId) {
+    window.location.href = '/download/' + fileId;
+}
+
 function uploadFile() {
     var formData = new FormData();
     var idTask = document.getElementById('button_upload').getAttribute('data-id-task');
