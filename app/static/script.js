@@ -63,7 +63,7 @@ $(document).ready(function () {
             $("#Modal_layout_task").on('hidden.bs.modal', function (e) {
                 $.post(url, data = $('#ModalForm_edit_task').serialize(), function (
                     data) {
-                    if (data.status == 'ok') {
+                    if (data.status == 'updated') {
                         $("#main_form").submit();
                     }
                  })

@@ -126,11 +126,18 @@ def task_edit(id):
     if request.method == 'GET':
         form.details.data = task.details
         form.hours.data = task.hours
+        form.description.data = task.description
     else:
-        task.change_value('details', form.details.data)
-        task.change_value('hours', form.hours.data)
-        # filename = images.save(form.upload.data)
-        return jsonify(status='ok')
+        if task.details != form.details.data or task.hours != form.hours.data or task.description != form.description.data:
+            with flask_app.app_context():
+                task.details = form.details.data
+                task.hours = form.hours.data
+                task.description = form.description.data
+                current_db_sessions = db.session.object_session(task)
+                current_db_sessions.add(task)
+                current_db_sessions.commit()
+            return jsonify(status='updated')
+        return jsonify(status='close')
     return render_template('_task_edit.html', title="Edit task", form=form, files=files, task=task)
 
 
