@@ -11,6 +11,18 @@ function downloadFile(fileId) {
     window.location.href = '/download/' + fileId;
 }
 
+function deleteFile(fileId) {
+    var  result = confirm('Are you sure?');
+    if (result) {
+        $.post(`/delete_file/${fileId}`, function(response) {
+          if (response.success) {
+            var listItem = $('#file-list li[data-file-id="' + fileId + '"]');
+            listItem.remove();
+          }
+        });
+    }
+}
+
 function uploadFile() {
     var formData = new FormData();
     var idTask = document.getElementById('button_upload').getAttribute('data-id-task');
@@ -23,8 +35,19 @@ function uploadFile() {
     xhr.onload = function () {
       var response = JSON.parse(xhr.responseText);
       var fileList = document.getElementById('file-list');
-        fileList.append('<li>' + response.name + '</li>');
-        $('#upload-form')[0].reset();
+      var myHtml = `
+           <li class="list-group-item d-flex justify-content-between align-items-center" data-file-id="${response.id}">
+            ${response.name}
+            <div class="btn-group" role="group" aria-label="File Actions">
+              <button type="button" onclick="openFile(${response.id})" data-id-file="${response.id}" class="btn btn-primary"><i class="fas fa-eye"></i></button>
+              <button type="button" onclick="downloadFile(${response.id})" data-id-file="${response.id}" class="btn btn-secondary"><i class="fas fa-download"></i></button>
+              <button type="button" onclick="deleteFile(${response.id})"  data-id-file="${response.id}" class="btn btn-danger"><i class="fas fa-trash"></i></button>
+            </div>
+          </li>
+      `;
+
+      fileList.insertAdjacentHTML('beforeend', myHtml);
+      $('#upload-form')[0].reset();
     };
     xhr.send(formData);
 }

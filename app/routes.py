@@ -55,13 +55,14 @@ def download_file(file_id):
     )
 
 
-@flask_app.route('/delete/<file_id>', methods=['POST'])
+@flask_app.route('/delete_file/<file_id>', methods=['POST'])
 def delete_file(file_id):
-    file = request.files['file']
-    attachment = AttachmentTasks(name=file.filename, content=file.read(), task_id=task_id)
-    db.session.add(attachment)
-    db.session.commit()
-    return jsonify({'name': attachment.name, 'id': attachment.id})
+    file = AttachmentTasks.query.filter(AttachmentTasks.id == int(file_id)).first_or_404()
+    with flask_app.app_context():
+        current_db_sessions = db.session.object_session(file)
+        current_db_sessions.delete(file)
+        current_db_sessions.commit()
+    return jsonify({'success': True})
 
 
 @flask_app.route("/", methods=("GET", "POST"))

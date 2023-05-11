@@ -1,26 +1,6 @@
 {% from 'bootstrap/wtf.html' import form_field %}
 <form id="ModalForm_edit_task" name="stepForm" class="form" method="post">
 
-<!--    <script>-->
-<!--      $(document).ready(function() {-->
-<!--        $('#upload-button').click(function (event) {-->
-<!--          event.preventDefault();-->
-<!--          var formData = new FormData(this);-->
-<!--          $.ajax({-->
-<!--            url: $(this).attr('action'),-->
-<!--            type: $(this).attr('method'),-->
-<!--            data: formData,-->
-<!--            processData: false,-->
-<!--            contentType: false,-->
-<!--            success: function(response) {-->
-<!--              $('#file-list').append('<li>' + response.name + '</li>');-->
-<!--              $('#upload-form')[0].reset();-->
-<!--            }-->
-<!--          });-->
-<!--        });-->
-<!--      });-->
-<!--    </script>-->
-
     <div class="modal-header bg-danger bg-gradient">
         <h4 class="modal-title text-light">{{ title }}</h4>
     </div>
@@ -41,9 +21,10 @@
           </ul>
           <div class="tab-content">
               <div class="tab-pane fade show active" id="notes">
-                  <h5 class="mt-2">Additional notes for the task</h5>
+
                     <div class="container">           
                       <div class="qa-message-list scroll-part">
+
                         <div class="message-item">
                           <div class="message-inner">
                             <div class="message-head clearfix">
@@ -101,21 +82,21 @@
 
               </div>
               <div class="tab-pane fade" id="files">
-                  <h5 class="mt-2">Additional files for the task</h5>
-                        <form id="upload-form">
-                          <input type="file" id="file-input">
-                          <button type="button" id="button_upload" onclick="uploadFile()" data-id-task="{{ task['id'] }}">Upload</button>
-                        </form>
+
+                    <form id="upload-form">
+                      <input type="file" id="file-input">
+                      <button type="button" id="button_upload" onclick="uploadFile()" data-id-task="{{ task['id'] }}">Upload</button>
+                    </form>
 
                       <div class="container scroll-part">
                         <ul id="file-list" class="list-group">
                             {% for file in files %}
-                              <li class="list-group-item d-flex justify-content-between align-items-center">
+                              <li class="list-group-item d-flex justify-content-between align-items-center" data-file-id="{{ file['id'] }}">
                                 {{ file.name }}
                                 <div class="btn-group" role="group" aria-label="File Actions">
                                   <button type="button" onclick="openFile({{ file['id'] }})" data-id-file="{{ file['id'] }}" class="btn btn-primary"><i class="fas fa-eye"></i></button>
                                   <button type="button" onclick="downloadFile({{ file['id'] }})" data-id-file="{{ file['id'] }}" class="btn btn-secondary"><i class="fas fa-download"></i></button>
-                                  <button type="button" data-id-file="{{ file['id'] }}" class="btn btn-danger"><i class="fas fa-trash"></i></button>
+                                  <button type="button" onclick="deleteFile({{ file['id'] }})"  data-id-file="{{ file['id'] }}" class="btn btn-danger"><i class="fas fa-trash"></i></button>
                                 </div>
                               </li>
                             {% endfor %}
