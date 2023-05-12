@@ -66,10 +66,64 @@ def delete_file(file_id):
     return jsonify({'success': True})
 
 
+@flask_app.route('/upload_prj/<prj_id>', methods=['POST'])
+def upload_prj_file(prj_id):
+    file = request.files['file']
+    attachment = AttachmentProjects(name=file.filename, content=file.read(), project_id=prj_id)
+    db.session.add(attachment)
+    db.session.commit()
+    return jsonify({'name': attachment.name, 'id': attachment.id})
+
+
+@flask_app.route('/open_prj/<prj_id>', methods=['GET'])
+def open_prj_file(prj_id):
+    file = AttachmentProjects.query.get_or_404(prj_id)
+    mimetype = mimetypes.guess_type(file.name)[0]
+    file_data = BytesIO(file.content)
+    return send_file(
+        file_data,
+        mimetype=mimetype,
+        as_attachment=False,
+        conditional=True
+    )
+
+
+@flask_app.route('/download_prj/<prj_id>', methods=['GET'])
+def download_prj_file(prj_id):
+    file = AttachmentProjects.query.get_or_404(prj_id)
+    mimetype = mimetypes.guess_type(file.name)[0]
+    file_data = BytesIO(file.content)
+    return send_file(
+        file_data,
+        mimetype=mimetype,
+        as_attachment=True,
+        download_name=file.name
+    )
+
+
+@flask_app.route('/delete_prj_file/<prj_id>', methods=['POST'])
+def delete_prj_file(prj_id):
+    file = AttachmentProjects.query.filter(AttachmentProjects.id == int(prj_id)).first_or_404()
+    with flask_app.app_context():
+        current_db_sessions = db.session.object_session(file)
+        current_db_sessions.delete(file)
+        current_db_sessions.commit()
+    return jsonify({'success': True})
+
+
 @flask_app.route('/add_note/<task_id>', methods=['POST'])
 def add_note(task_id):
     detail = request.form.get("detail")
     note = NotesTasks(detail=detail, task_id=task_id, date=datetime.now())
+    db.session.add(note)
+    db.session.commit()
+    return jsonify({'detail': note.detail, 'id': note.id, 'date': note.date.strftime('%Y-%m-%d')})
+
+
+@flask_app.route('/add_note_prj/<prj_id>', methods=['POST'])
+def add_note_prj(prj_id):
+    detail = request.form.get("detail")
+    note = NotesProjects(detail=detail, project_id=prj_id, date=datetime.now())
     db.session.add(note)
     db.session.commit()
     return jsonify({'detail': note.detail, 'id': note.id, 'date': note.date.strftime('%Y-%m-%d')})
