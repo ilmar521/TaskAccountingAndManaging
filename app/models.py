@@ -19,7 +19,6 @@ class NotesProjects(db.Model):
     id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     detail = db.Column(db.Text)
     date = db.Column(db.Date)
-    user_id = db.Column(db.Integer)
     project_id = db.Column(db.Integer, db.ForeignKey("project.id"))
 
 
@@ -27,7 +26,6 @@ class NotesTasks(db.Model):
     id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     detail = db.Column(db.Text)
     date = db.Column(db.Date)
-    user_id = db.Column(db.Integer)
     task_id = db.Column(db.Integer, db.ForeignKey("task.id"))
 
 
