@@ -1,11 +1,12 @@
 import flask
 from app import flask_app, db
-from app.models import Task, Project, AttachmentProjects, AttachmentTasks
+from app.models import Task, Project, AttachmentProjects, AttachmentTasks, NotesTasks, NotesProjects
 from app.forms import TaskEditForm, ProjectEditForm
 from flask import flash, jsonify, redirect, url_for, render_template, request, send_file
 from flask_login import current_user
 from io import BytesIO
 import mimetypes
+from datetime import datetime
 
 
 current_project = None
@@ -65,6 +66,15 @@ def delete_file(file_id):
     return jsonify({'success': True})
 
 
+@flask_app.route('/add_note/<task_id>', methods=['POST'])
+def add_note(task_id):
+    detail = request.form.get("detail")
+    note = NotesTasks(detail=detail, task_id=task_id, date=datetime.now())
+    db.session.add(note)
+    db.session.commit()
+    return jsonify({'detail': note.detail, 'id': note.id, 'date': note.date.strftime('%Y-%m-%d')})
+
+
 @flask_app.route("/", methods=("GET", "POST"))
 def index():
     global current_project, current_status
@@ -122,6 +132,7 @@ def add_project():
 def task_edit(id):
     task = Task.query.filter_by(id=id).first_or_404()
     files = list(AttachmentTasks.query.filter(AttachmentTasks.task_id == id))
+    notes = list(NotesTasks.query.filter(NotesTasks.task_id == id).order_by(NotesTasks.date.desc()).all())
     form = TaskEditForm(details=task.details, hours=task.hours, description=task.description)
     if request.method == 'GET':
         form.details.data = task.details
@@ -138,7 +149,7 @@ def task_edit(id):
                 current_db_sessions.commit()
             return jsonify(status='updated')
         return jsonify(status='close')
-    return render_template('_task_edit.html', title="Edit task", form=form, files=files, task=task)
+    return render_template('_task_edit.html', title="Edit task", form=form, files=files, notes=notes, task=task)
 
 
 @flask_app.route("/delete_task/<task_id>", methods=("GET", "POST"))
@@ -169,14 +180,14 @@ def project_edit(id):
 def delete_project(project_id):
     project = Project.query.filter(Project.id == int(project_id)).first_or_404()
     with flask_app.app_context():
-        all_tasks = list(Task.query.filter(Task.project_id == project.id))
+        # all_tasks = list(Task.query.filter(Task.project_id == project.id))
         current_db_sessions = db.session.object_session(project)
         current_db_sessions.delete(project)
         current_db_sessions.commit()
-        for task in all_tasks:
-            current_db_sessions = db.session.object_session(task)
-            current_db_sessions.delete(task)
-            current_db_sessions.commit()
+        # for task in all_tasks:
+        #     current_db_sessions = db.session.object_session(task)
+        #     current_db_sessions.delete(task)
+        #     current_db_sessions.commit()
     return ""
 
 

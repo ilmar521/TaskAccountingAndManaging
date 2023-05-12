@@ -52,6 +52,44 @@ function uploadFile() {
     xhr.send(formData);
 }
 
+function addNote() {
+    var formData = new FormData();
+    var idTask = document.getElementById('button_add_note').getAttribute('data-id-task');
+
+    var detail = document.getElementById('input_add_note').value;
+    formData.append('detail', detail);
+
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', `/add_note/${idTask}`, true);
+    xhr.onload = function () {
+      var response = JSON.parse(xhr.responseText);
+      var notesList = document.getElementById('notes_list');
+      var myHtml = `
+         <div class="message-item">
+          <div class="message-inner">
+            <div class="message-head clearfix">
+              <div class="user-detail">
+                <div class="post-meta">
+                  <div class="asker-meta">
+                    <span class="qa-message-what"></span>
+                    <span class="qa-message-when">
+                      <span class="qa-message-when-data">${response.date}</span>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="qa-message-content">
+              ${response.detail}
+            </div>
+          </div>
+        </div>
+      `;
+      notesList.insertAdjacentHTML('afterbegin', myHtml);
+      $('#input_add_note').val('');
+    };
+    xhr.send(formData);
+}
 
 $(document).ready(function () {
     $('.btn_edit_task').click(function () {

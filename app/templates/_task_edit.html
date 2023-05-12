@@ -22,64 +22,36 @@
           <div class="tab-content">
               <div class="tab-pane fade show active" id="notes">
 
-                    <div class="container">           
-                      <div class="qa-message-list scroll-part">
+                    <div class="container">
+                        <div class="input-group mb-3 mt-4">
+                            <input name="note-detail" type="text" class="form-control" placeholder="new note" id="input_add_note">
+                            <button type="button" name ="button_add_note" id="button_add_note" onclick="addNote()" data-id-task="{{ task['id'] }}"><i class="fa-sharp fa-solid fa-plus fa-lg" style="color: #dd4151;"></i> </button>
+                        </div>
+                      <div class="qa-message-list scroll-part" id="notes_list">
+                        {% for note in notes %}
+                        <div class="message-item">
+                          <div class="message-inner">
+                            <div class="message-head clearfix">
+                              <div class="user-detail">
+                                <div class="post-meta">
+                                  <div class="asker-meta">
+                                    <span class="qa-message-what"></span>
+                                    <span class="qa-message-when">
+                                      <span class="qa-message-when-data">{{ note.date }}</span>
+                                    </span>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="qa-message-content">
+                              {{ note.detail }}
+                            </div>
+                          </div>
+                        </div>
+                        {% endfor %}
 
-                        <div class="message-item">
-                          <div class="message-inner">
-                            <div class="message-head clearfix">
-                              <div class="user-detail">
-                                <div class="post-meta">
-                                  <div class="asker-meta">
-                                    <span class="qa-message-what"></span>
-                                    <span class="qa-message-when">
-                                      <span class="qa-message-when-data">Nov 24, 2013</span>
-                                    </span>
-                                    <span class="qa-message-who">
-                                      <span class="qa-message-who-pad">by </span>
-                                      <span class="qa-message-who-data"><a href="#">Gopal K Verma</a></span>
-                                    </span>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                            <div class="qa-message-content">
-                              Gopal is an MCA from GJU (Hisar) and a Cisco Certified Network Professional. He has more than 11 years of
-                              experience in core data networking and telecommunications. He develops contents for Computer Science related
-                              subjects. He is also involved in developing Apps for various Mobile devices.
-                            </div>
-                          </div>
-                        </div>
-                    
-                        <div class="message-item">
-                          <div class="message-inner">
-                            <div class="message-head clearfix">
-                              <div class="user-detail">
-                                <div class="post-meta">
-                                  <div class="asker-meta">
-                                    <span class="qa-message-what"></span>
-                                    <span class="qa-message-when">
-                                      <span class="qa-message-when-data">Oct 25, 2013</span>
-                                    </span>
-                                    <span class="qa-message-who">
-                                      <span class="qa-message-who-pad">by </span>
-                                      <span class="qa-message-who-data"><a href="#">Omer</a></span>
-                                    </span>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                            <div class="qa-message-content">
-                              Omer has 10+ years of experience, with 4+ years in project management overlapping with 8+ years in Design. He
-                              has PMP, 6 Sigma Green Belt and Intellectual Property credentials. Across his career, he has worked in
-                              designing training modules, team building events, and driving teams towards results aligned with strategic
-                              objectives.
-                            </div>
-                          </div>
-                        </div>
-                      </div>         
+                      </div>
                     </div>
-
               </div>
               <div class="tab-pane fade" id="files">
 

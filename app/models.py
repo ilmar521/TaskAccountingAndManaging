@@ -48,8 +48,8 @@ class Task(db.Model):
     hours = db.Column(db.Float, default=0)
     project_id = db.Column(db.Integer, db.ForeignKey('project.id'))
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    attachments = db.relationship('AttachmentTasks', backref='task', lazy='dynamic')
-    notes = db.relationship('NotesTasks', backref='task', lazy='dynamic')
+    attachments = db.relationship('AttachmentTasks', cascade="all, delete", backref='task', lazy='dynamic')
+    notes = db.relationship('NotesTasks', cascade="all, delete", backref='task', lazy='dynamic')
 
     def __getitem__(self, item):
         return getattr(self, item)
@@ -74,9 +74,9 @@ class Project(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String(200))
     hour_rate = db.Column(db.Integer)
-    tasks = db.relationship('Task', backref='project', lazy='dynamic')
-    attachments = db.relationship('AttachmentProjects', backref='project', lazy='dynamic')
-    notes = db.relationship('NotesProjects', backref='project', lazy='dynamic')
+    tasks = db.relationship('Task', backref='project', cascade="all, delete", lazy='dynamic')
+    attachments = db.relationship('AttachmentProjects', cascade="all, delete", backref='project', lazy='dynamic')
+    notes = db.relationship('NotesProjects', cascade="all, delete", backref='project', lazy='dynamic')
 
     def __getitem__(self, item):
         return getattr(self, item)
