@@ -27,8 +27,10 @@ def load_user(user_id):
     return User.query.get(int(user_id))
 
 
-# blueprint for auth routes in our app
 from app.auth.auth import auth as auth_blueprint
 flask_app.register_blueprint(auth_blueprint)
+
+from app.reports.reports import reports as reports_blueprint
+flask_app.register_blueprint(reports_blueprint)
 
 from app import models, routes
