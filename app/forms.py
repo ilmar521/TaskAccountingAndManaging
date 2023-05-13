@@ -11,5 +11,6 @@ class TaskEditForm(flask_wtf.FlaskForm):
 
 class ProjectEditForm(flask_wtf.FlaskForm):
     name = wtforms.StringField("Name of project", validators=[wtforms.validators.DataRequired()])
+    description = wtforms.StringField("Description of project")
     hour_rate = wtforms.IntegerField("Hour rate")
     upload = wtforms.FileField('Add new file')

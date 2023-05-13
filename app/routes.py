@@ -219,15 +219,25 @@ def delete_task(task_id):
 @flask_app.route('/project/<id>/edit', methods=['GET', 'POST'])
 def project_edit(id):
     project = Project.query.filter_by(id=id).first_or_404()
-    form = ProjectEditForm(name=project.name, hour_rate=project.hour_rate)
+    files = list(AttachmentProjects.query.filter(AttachmentProjects.project_id == id))
+    notes = list(NotesProjects.query.filter(NotesProjects.project_id == id).order_by(NotesProjects.date.desc()).all())
+    form = ProjectEditForm(name=project.name, hour_rate=project.hour_rate, description=project.description)
     if request.method == 'GET':
         form.name.data = project.name
         form.hour_rate.data = project.hour_rate
+        form.description.data = project.description
     else:
-        project.change_value('name', form.name.data)
-        project.change_value('hour_rate', form.hour_rate.data)
-        return jsonify(status='ok')
-    return render_template('_project_edit.html', title="Edit project", form=form)
+        if project.name != form.name.data or project.hour_rate != form.hour_rate.data or project.description != form.description.data:
+            with flask_app.app_context():
+                project.details = form.name.data
+                project.hour_rate = form.hour_rate.data
+                project.description = form.description.data
+                current_db_sessions = db.session.object_session(project)
+                current_db_sessions.add(project)
+                current_db_sessions.commit()
+            return jsonify(status='updated')
+        return jsonify(status='close')
+    return render_template('_project_edit.html', title="Edit project", form=form, files=files, notes=notes, project=project)
 
 
 @flask_app.route("/delete_project/<project_id>", methods=("GET", "POST"))

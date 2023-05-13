@@ -11,6 +11,7 @@ class AttachmentProjects(db.Model):
 
 class AttachmentTasks(db.Model):
     id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    name = db.Column(db.String(250))
     content = db.Column(db.LargeBinary)
     task_id = db.Column(db.Integer, db.ForeignKey("task.id"))
 
@@ -71,6 +72,7 @@ class Task(db.Model):
 class Project(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String(200))
+    description = db.Column(db.Text)
     hour_rate = db.Column(db.Integer)
     tasks = db.relationship('Task', backref='project', cascade="all, delete", lazy='dynamic')
     attachments = db.relationship('AttachmentProjects', cascade="all, delete", backref='project', lazy='dynamic')

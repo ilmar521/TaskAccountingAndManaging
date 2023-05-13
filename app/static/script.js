@@ -3,18 +3,21 @@ let input = document.querySelectorAll('input.btn-check');
 let tasks = document.querySelectorAll('.task');
 let statuses = document.querySelectorAll('.status');
 
-function openFile(fileId) {
-    window.open('/open/' + fileId, '_blank');
+function openFile(fileId, prj) {
+    var path = prj ? "open_prj" : "open";
+    window.open(`/${path}/` + fileId, '_blank');
 }
 
-function downloadFile(fileId) {
-    window.location.href = '/download/' + fileId;
+function downloadFile(fileId, prj) {
+    var path = prj ? "download_prj" : "download";
+    window.location.href = `/${path}/${fileId}`
 }
 
-function deleteFile(fileId) {
+function deleteFile(fileId, prj) {
     var  result = confirm('Are you sure?');
     if (result) {
-        $.post(`/delete_file/${fileId}`, function(response) {
+        var path = prj ? "delete_prj_file" : "delete_file";
+        $.post(`/${path}/${fileId}`, function(response) {
           if (response.success) {
             var listItem = $('#file-list li[data-file-id="' + fileId + '"]');
             listItem.remove();
@@ -23,15 +26,16 @@ function deleteFile(fileId) {
     }
 }
 
-function uploadFile() {
+function uploadFile(prj) {
     var formData = new FormData();
     var idTask = document.getElementById('button_upload').getAttribute('data-id-task');
 
     var fileInput = document.getElementById('file-input');
     formData.append('file', fileInput.files[0]);
 
+    var path = prj ? "upload_prj" : "upload";
     var xhr = new XMLHttpRequest();
-    xhr.open('POST', `/upload/${idTask}`, true);
+    xhr.open('POST', `/${path}/${idTask}`, true);
     xhr.onload = function () {
       var response = JSON.parse(xhr.responseText);
       var fileList = document.getElementById('file-list');
@@ -52,7 +56,7 @@ function uploadFile() {
     xhr.send(formData);
 }
 
-function addNote() {
+function addNote(prj) {
     var formData = new FormData();
     var idTask = document.getElementById('button_add_note').getAttribute('data-id-task');
 
@@ -60,7 +64,8 @@ function addNote() {
     formData.append('detail', detail);
 
     var xhr = new XMLHttpRequest();
-    xhr.open('POST', `/add_note/${idTask}`, true);
+    var path = prj ? "add_note_prj" : "add_note";
+    xhr.open('POST', `/${path}/${idTask}`, true);
     xhr.onload = function () {
       var response = JSON.parse(xhr.responseText);
       var notesList = document.getElementById('notes_list');
@@ -128,7 +133,7 @@ $(document).ready(function () {
             $("#Modal_layout_prj").on('hidden.bs.modal', function (e) {
                 $.post(url, data = $('#ModalForm_edit_project').serialize(), function (
                     data) {
-                    if (data.status == 'ok') {
+                    if (data.status == 'updated') {
                         $("#main_form").submit();
                     }
                  })
