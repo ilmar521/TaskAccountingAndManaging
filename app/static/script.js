@@ -3,6 +3,7 @@ let input = document.querySelectorAll('input.btn-check');
 let tasks = document.querySelectorAll('.task');
 let statuses = document.querySelectorAll('.status');
 
+
 function openFile(fileId, prj) {
     var path = prj ? "open_prj" : "open";
     window.open(`/${path}/` + fileId, '_blank');
@@ -100,6 +101,8 @@ $(document).ready(function () {
     $('.btn_edit_task').click(function () {
         var url = $(this).data('whatever');
         var id_task = $(this).data('id');
+        $.ajaxSetup({ cache: false });
+        $('#Modal_layout_task').off('hidden.bs.modal');
         $.get(url, function (data) {
             $('#Modal_layout_task .modal-content').html(data);
             $('#Modal_layout_task').modal('show');
@@ -127,6 +130,8 @@ $(document).ready(function () {
     $('.btn_edit_prj').click(function () {
         var url = $(this).data('whatever');
         var id_prj = $(this).data('id');
+        $.ajaxSetup({ cache: false });
+        $('#Modal_layout_prj').off('hidden.bs.modal');
         $.get(url, function (data) {
             $('#Modal_layout_prj .modal-content').html(data);
             $('#Modal_layout_prj').modal('show');
@@ -149,6 +154,7 @@ $(document).ready(function () {
             })
         })
     });
+
 });
 
 

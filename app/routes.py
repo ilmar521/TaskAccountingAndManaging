@@ -151,10 +151,10 @@ def index():
             else:
                 new_task = Task(details=task_name, status='new', hours=0, project_id=current_project, user_id=current_user.id)
                 new_task.save_task_to_db()
-        all_projects = Project.query.all()
+        all_projects = Project.query.order_by(Project.id).all()
         all_tasks = list(Task.query.filter(Task.project_id == current_project, Task.status == current_status, Task.user_id == current_user.id))
     else:
-        all_projects = Project.query.all()
+        all_projects = Project.query.order_by(Project.id).all()
         if current_project is None:
             current_project = 0 if len(all_projects) == 0 else all_projects[0].id
         if current_status is None:
@@ -219,24 +219,25 @@ def delete_task(task_id):
 @flask_app.route('/project/<id>/edit', methods=['GET', 'POST'])
 def project_edit(id):
     project = Project.query.filter_by(id=id).first_or_404()
-    files = list(AttachmentProjects.query.filter(AttachmentProjects.project_id == id))
-    notes = list(NotesProjects.query.filter(NotesProjects.project_id == id).order_by(NotesProjects.date.desc()).all())
+    files = list(AttachmentProjects.query.filter_by(project_id=id))
+    notes = list(NotesProjects.query.filter_by(project_id=id).order_by(NotesProjects.date.desc()).all())
     form = ProjectEditForm(name=project.name, hour_rate=project.hour_rate, description=project.description)
     if request.method == 'GET':
         form.name.data = project.name
         form.hour_rate.data = project.hour_rate
         form.description.data = project.description
     else:
+        status = 'close'
         if project.name != form.name.data or project.hour_rate != form.hour_rate.data or project.description != form.description.data:
+            if project.name != form.name.data:
+                status = 'updated'
             with flask_app.app_context():
-                project.details = form.name.data
+                project.name = form.name.data
                 project.hour_rate = form.hour_rate.data
                 project.description = form.description.data
-                current_db_sessions = db.session.object_session(project)
-                current_db_sessions.add(project)
-                current_db_sessions.commit()
-            return jsonify(status='updated')
-        return jsonify(status='close')
+                db.session.merge(project)
+                db.session.commit()
+        return jsonify(status=status)
     return render_template('_project_edit.html', title="Edit project", form=form, files=files, notes=notes, project=project)
 
 
