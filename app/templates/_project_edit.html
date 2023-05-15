@@ -6,21 +6,26 @@
     <div class="modal-body">
         {{ form.hidden_tag() }}
         {{ form_field(form.name) }}
-        {{ form_field(form.description) }}
+
         {{ form_field(form.hour_rate) }}
 
          <div class="container-fluid my-2">
           <ul class="nav nav-tabs" id="myTab">
               <li class="nav-item">
-                  <a href="#notes" class="nav-link active" data-bs-toggle="tab">Notes</a>
+                  <a href="#description_prj" class="nav-link active" data-bs-toggle="tab">Description of project</a>
               </li>
               <li class="nav-item">
-                  <a href="#files" class="nav-link" data-bs-toggle="tab">Files</a>
+                  <a href="#notes_prj" class="nav-link" data-bs-toggle="tab">Notes</a>
+              </li>
+              <li class="nav-item">
+                  <a href="#files_prj" class="nav-link" data-bs-toggle="tab">Files</a>
               </li>
           </ul>
           <div class="tab-content">
-              <div class="tab-pane fade show active" id="notes">
-
+              <div class="tab-pane fade show active" id="description_prj">
+                {{ form_field(form.description) }}
+              </div>
+              <div class="tab-pane fade fade" id="notes_prj">
                     <div class="container">
                         <div class="input-group mb-3 mt-4">
                             <input name="note-detail" type="text" class="form-control" placeholder="new note" id="input_add_note">
@@ -52,7 +57,7 @@
                       </div>
                     </div>
               </div>
-              <div class="tab-pane fade" id="files">
+              <div class="tab-pane fade" id="files_prj">
 
                     <form id="upload-form">
                       <input type="file" id="file-input">

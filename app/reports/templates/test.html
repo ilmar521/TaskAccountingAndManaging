@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Task Report</title>
+  <style>
+    .project-row {
+      font-weight: bold;
+      background-color: #f5f5f5;
+    }
+    .task-row {
+      padding-left: 20px;
+    }
+    .toggle-icon {
+      cursor: pointer;
+      user-select: none;
+    }
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <table>
+    <thead>
+      <tr>
+        <th>Проект/задача</th>
+        <th>Часов</th>
+        <th>Ставка Часа</th>
+        <th>Итого</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="project-row collapsed">
+        <td>
+          <span class="toggle-icon">+</span> Проект 1
+        </td>
+        <td>10</td>
+        <td>10</td>
+        <td>100</td>
+      </tr>
+      <tr class="task-row hidden">
+        <td>Задача 1</td>
+        <td>5</td>
+        <td>10</td>
+        <td>50</td>
+      </tr>
+      <tr class="task-row hidden">
+        <td>Задача 2</td>
+        <td>5</td>
+        <td>10</td>
+        <td>50</td>
+      </tr>
+      <tr class="project-row collapsed">
+        <td>
+          <span class="toggle-icon">+</span> Проект 2
+        </td>
+        <td>8</td>
+        <td>12</td>
+        <td>96</td>
+      </tr>
+      <tr class="task-row hidden">
+        <td>Задача 3</td>
+        <td>4</td>
+        <td>12</td>
+        <td>48</td>
+      </tr>
+      <tr class="task-row hidden">
+        <td>Задача 4</td>
+        <td>4</td>
+        <td>12</td>
+        <td>48</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <script>
+    // JavaScript код для сворачивания/разворачивания проектов
+    document.addEventListener('DOMContentLoaded', function() {
+      var toggleIcons = document.getElementsByClassName('toggle-icon');
+      for (var i = 0; i < toggleIcons.length; i++) {
+        toggleIcons[i].addEventListener('click', toggleProject);
+      }
+    });
+  
+    function toggleProject() {
+      var projectRow = this.parentNode.parentNode;
+      var nextRow = projectRow.nextElementSibling;
+  
+      while (nextRow && !nextRow.classList.contains('project-row')) {
+        if (nextRow.classList.contains('task-row')) {
+          if (nextRow.classList.contains('hidden')) {
+            nextRow.classList.remove('hidden');
+          } else {
+            nextRow.classList.add('hidden');
+          }
+        }
+        nextRow = nextRow.nextElementSibling;
+      }
+  
+      if (projectRow.classList.contains('collapsed')) {
+        projectRow.classList.remove('collapsed');
+        this.textContent = '-';
+        } else {
+        projectRow.classList.add('collapsed');
+        this.textContent = '+';
+        }
+    }
+  </script>
+  
+  
+  
+  
+  
+
+
+</body>
+</html>

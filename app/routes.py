@@ -245,14 +245,9 @@ def project_edit(id):
 def delete_project(project_id):
     project = Project.query.filter(Project.id == int(project_id)).first_or_404()
     with flask_app.app_context():
-        # all_tasks = list(Task.query.filter(Task.project_id == project.id))
         current_db_sessions = db.session.object_session(project)
         current_db_sessions.delete(project)
         current_db_sessions.commit()
-        # for task in all_tasks:
-        #     current_db_sessions = db.session.object_session(task)
-        #     current_db_sessions.delete(task)
-        #     current_db_sessions.commit()
     return ""
 
 

@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+{% if current_user.admin %}
+<div class="d-flex">
+    <select id="userDropdown" class="form-select" onchange="updateSelectedUser(this.value)">
+      <option disabled selected>Select User</option>
+        <option value="All">All</option>
+        {% for user in users %}
+            <option value="{{ user.id }}">{{ user.name }}</option>
+        {% endfor %}
+    </select>
+    {% endif %}
+
+    <input type="checkbox" name="status[]" value="new" id="checkbox-new">
+    <label for="checkbox-new">New</label><br>
+    <input type="checkbox" name="status[]" value="in operation" id="checkbox-in-operation">
+    <label for="checkbox-in-operation">In Operation</label><br>
+    <input type="checkbox" name="status[]" value="complete" id="checkbox-complete">
+    <label for="checkbox-complete">Complete</label><br>
+    <input type="checkbox" name="status[]" value="archive" id="checkbox-archive">
+    <label for="checkbox-archive">Archive</label><br>
+
+    <select id="variantDropdown" class="form-select">
+        <option disabled selected>Select variant</option>
+        <option value="All">Main</option>
+    </select>
+
+    <button>Make report</button>
+</div>
+<div class="container-fluid" id="report_area">
+   <table>
+    <thead>
+      <tr>
+        <th>Проект/задача</th>
+        <th>Часов</th>
+        <th>Ставка Часа</th>
+        <th>Итого</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="project-row collapsed">
+        <td>
+          <span class="toggle-icon">+</span> Проект 1
+        </td>
+        <td>10</td>
+        <td>10</td>
+        <td>100</td>
+      </tr>
+      <tr class="task-row hidden">
+        <td>Задача 1</td>
+        <td>5</td>
+        <td>10</td>
+        <td>50</td>
+      </tr>
+      <tr class="task-row hidden">
+        <td>Задача 2</td>
+        <td>5</td>
+        <td>10</td>
+        <td>50</td>
+      </tr>
+      <tr class="project-row collapsed">
+        <td>
+          <span class="toggle-icon">+</span> Проект 2
+        </td>
+        <td>8</td>
+        <td>12</td>
+        <td>96</td>
+      </tr>
+      <tr class="task-row hidden">
+        <td>Задача 3</td>
+        <td>4</td>
+        <td>12</td>
+        <td>48</td>
+      </tr>
+      <tr class="task-row hidden">
+        <td>Задача 4</td>
+        <td>4</td>
+        <td>12</td>
+        <td>48</td>
+      </tr>
+    </tbody>
+  </table>
+
+</div>
+{% endblock %}
