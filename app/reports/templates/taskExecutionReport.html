@@ -1,10 +1,13 @@
-{% extends "base.html" %}
+{% extends "base_reports.html" %}
 
 {% block content %}
 
-{% if current_user.admin %}
+<h4>Task Execution Report</h4>
+
 <div class="d-flex">
-    <select id="userDropdown" class="form-select" onchange="updateSelectedUser(this.value)">
+
+    {% if current_user.admin %}
+    <select id="userDropdown" class="form-select">
       <option disabled selected>Select User</option>
         <option value="All">All</option>
         {% for user in users %}
@@ -29,59 +32,7 @@
 
     <button>Make report</button>
 </div>
-<div class="container-fluid" id="report_area">
-   <table>
-    <thead>
-      <tr>
-        <th>Проект/задача</th>
-        <th>Часов</th>
-        <th>Ставка Часа</th>
-        <th>Итого</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr class="project-row collapsed">
-        <td>
-          <span class="toggle-icon">+</span> Проект 1
-        </td>
-        <td>10</td>
-        <td>10</td>
-        <td>100</td>
-      </tr>
-      <tr class="task-row hidden">
-        <td>Задача 1</td>
-        <td>5</td>
-        <td>10</td>
-        <td>50</td>
-      </tr>
-      <tr class="task-row hidden">
-        <td>Задача 2</td>
-        <td>5</td>
-        <td>10</td>
-        <td>50</td>
-      </tr>
-      <tr class="project-row collapsed">
-        <td>
-          <span class="toggle-icon">+</span> Проект 2
-        </td>
-        <td>8</td>
-        <td>12</td>
-        <td>96</td>
-      </tr>
-      <tr class="task-row hidden">
-        <td>Задача 3</td>
-        <td>4</td>
-        <td>12</td>
-        <td>48</td>
-      </tr>
-      <tr class="task-row hidden">
-        <td>Задача 4</td>
-        <td>4</td>
-        <td>12</td>
-        <td>48</td>
-      </tr>
-    </tbody>
-  </table>
 
+<div class="container-fluid" id="report_area">
 </div>
 {% endblock %}
