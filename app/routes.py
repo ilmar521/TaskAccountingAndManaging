@@ -129,6 +129,12 @@ def add_note_prj(prj_id):
     return jsonify({'detail': note.detail, 'id': note.id, 'date': note.date.strftime('%Y-%m-%d')})
 
 
+def get_allowed_projects():
+    if current_user.admin:
+        return Project.query.order_by(Project.id).all()
+    return Project.query.join(Project.users).filter(User.id == current_user.id).order_by(Project.id).all()
+
+
 @flask_app.route("/", methods=("GET", "POST"))
 def index():
     global current_project, current_status
@@ -151,10 +157,10 @@ def index():
             else:
                 new_task = Task(details=task_name, status='new', hours=0, project_id=current_project, user_id=current_user.id)
                 new_task.save_task_to_db()
-        all_projects = Project.query.order_by(Project.id).all()
+        all_projects = get_allowed_projects()
         all_tasks = list(Task.query.filter(Task.project_id == current_project, Task.status == current_status, Task.user_id == current_user.id))
     else:
-        all_projects = Project.query.order_by(Project.id).all()
+        all_projects = get_allowed_projects()
         if current_project is None:
             current_project = 0 if len(all_projects) == 0 else all_projects[0].id
         if current_status is None:
@@ -231,11 +237,12 @@ def project_edit(id):
         form.description.data = project.description
     else:
         status = 'close'
-        user_ids = request.form.getlist('user_ids[]')
-        users = User.query.filter(User.id.in_(user_ids)).all()
-        if set(user_ids) != set(user.id for user in project.users):
-            project.users = users
-            db.session.commit()
+        if current_user.admin:
+            user_ids = request.form.getlist('user_ids[]')
+            users = User.query.filter(User.id.in_(user_ids)).all()
+            if set(user_ids) != set(user.id for user in project.users):
+                project.users = users
+                db.session.commit()
         if project.name != form.name.data or project.hour_rate != form.hour_rate.data or project.description != form.description.data:
             if project.name != form.name.data:
                 status = 'updated'

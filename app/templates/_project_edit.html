@@ -6,8 +6,9 @@
     <div class="modal-body">
         {{ form.hidden_tag() }}
         {{ form_field(form.name) }}
-
-        {{ form_field(form.hour_rate) }}
+        {% if current_user.admin %}
+            {{ form_field(form.hour_rate) }}
+        {% endif %}
 
          <div class="container-fluid my-2">
           <ul class="nav nav-tabs" id="myTab">

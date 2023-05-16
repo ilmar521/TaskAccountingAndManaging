@@ -114,7 +114,9 @@
             <div class="col-2 projects">
                 <div class="w-100 d-flex mb-3 mt-2">
                     <h3>Projects</h3>
+                    {% if current_user.admin %}
                     <a style="padding-top: 7px;" type="button" class="mx-2 btn-danger" data-bs-toggle="modal" data-bs-target="#project_adding"><i class="fa-sharp fa-solid fa-plus fa-lg" style="color: #010813;"></i></a>
+                    {% endif %}
                 </div>
 
                 <div class="btn-group-vertical w-100" role="group" aria-label="Vertical radio toggle button group">
