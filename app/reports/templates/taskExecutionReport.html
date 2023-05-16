@@ -4,7 +4,11 @@
 
 <h4>Task Execution Report</h4>
 
+<div id="error-message" class="alert alert-warning" role="alert">
+</div>
+
 <div class="d-flex">
+
 
     {% if current_user.admin %}
     <select id="userDropdown" class="form-select">
@@ -18,7 +22,7 @@
 
     <input type="checkbox" name="status[]" value="new" id="checkbox-new">
     <label for="checkbox-new">New</label><br>
-    <input type="checkbox" name="status[]" value="in operation" id="checkbox-in-operation">
+    <input type="checkbox" name="status[]" value="in_operation" id="checkbox-in-operation">
     <label for="checkbox-in-operation">In Operation</label><br>
     <input type="checkbox" name="status[]" value="complete" id="checkbox-complete">
     <label for="checkbox-complete">Complete</label><br>
@@ -27,10 +31,10 @@
 
     <select id="variantDropdown" class="form-select">
         <option disabled selected>Select variant</option>
-        <option value="All">Main</option>
+        <option value="main">Main</option>
     </select>
 
-    <button>Make report</button>
+    <button id="makeReportBtn">Make report</button>
 </div>
 
 <div class="container-fluid" id="report_area">

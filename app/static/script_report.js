@@ -1,14 +1,14 @@
 
 document.addEventListener('DOMContentLoaded', function() {
-  var toggleIcons = document.getElementsByClassName('toggle-icon');
-  for (var i = 0; i < toggleIcons.length; i++) {
-    toggleIcons[i].addEventListener('click', toggleProject);
-  }
+  var makeReportBtn = document.getElementById('makeReportBtn');
+    makeReportBtn.addEventListener('click', sendReportRequest);
 });
 
 function toggleProject() {
   var projectRow = this.parentNode.parentNode;
   var nextRow = projectRow.nextElementSibling;
+
+    console.log('click on toggle');
 
   while (nextRow && !nextRow.classList.contains('project-row')) {
     if (nextRow.classList.contains('task-row')) {
@@ -29,3 +29,50 @@ function toggleProject() {
     this.textContent = '+';
     }
 }
+
+function sendReportRequest() {
+    var userDropdown = document.getElementById('userDropdown');
+    var statusCheckboxes = document.querySelectorAll('input[name="status[]"]:checked');
+    var variantDropdown = document.getElementById('variantDropdown');
+
+    var selectedUserId = '';
+    if (document.getElementById('userDropdown')) {
+      selectedUserId = userDropdown ? userDropdown.value : '';
+    } else {
+      selectedUserId = 'none';
+    }
+    var selectedStatuses = Array.from(statusCheckboxes, function(checkbox) {
+      return checkbox.value;
+    });
+    var selectedVariant = variantDropdown ? variantDropdown.value : '';
+
+    if (!selectedUserId || !selectedVariant || selectedStatuses.length === 0) {
+    var errorMessage = document.getElementById('error-message');
+        errorMessage.textContent = 'Please fill in all the required fields.';
+        return;
+    }
+    var errorMessage = document.getElementById('error-message');
+    errorMessage.textContent = '';
+
+    var data = {
+        user_id: selectedUserId,
+        statuses: selectedStatuses,
+        variant: selectedVariant
+    };
+
+    fetch(`/task_execution_report/${selectedVariant}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(data),
+        })
+        .then(response => response.text())
+        .then(tableHtml => {
+          var reportArea = document.getElementById('report_area');
+          reportArea.innerHTML = tableHtml;
+    })
+    .catch(error => {
+      console.error('Error:', error);
+    });
+  }

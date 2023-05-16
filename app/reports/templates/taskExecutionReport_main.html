@@ -1,0 +1,33 @@
+
+  <table>
+    <thead>
+      <tr>
+        <th>Project/task</th>
+        <th>Hours</th>
+        <th>Price</th>
+        <th>Total</th>
+      </tr>
+    </thead>
+    <tbody>
+
+    {% for project in result.values() %}
+      <tr class="project-row collapsed">
+          <td>
+            <span class="toggle-icon" onclick="toggleProject.call(this)">+</span> {{ project['name'] }}
+          </td>
+          <td>{{ project['total_hours'] }}</td>
+          <td>{{ project['hour_rate'] }}</td>
+          <td>{{ project['total_amount'] }}</td>
+      </tr>
+      {% for task in project['tasks'] %}
+        <tr class="task-row hidden">
+          <td> {{ task['details'] }} </td>
+          <td> {{ task['hours'] }} </td>
+          <td> {{ task['hour_rate'] }} </td>
+          <td> {{ task['total_amount'] }} </td>
+        </tr>
+      {% endfor %}
+    {% endfor %}
+
+    </tbody>
+  </table>
