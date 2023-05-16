@@ -1,3 +1,5 @@
+const variantDropdown = document.getElementById('variantDropdown');
+variantDropdown.value = 'main'
 
 document.addEventListener('DOMContentLoaded', function() {
   var makeReportBtn = document.getElementById('makeReportBtn');
@@ -46,13 +48,16 @@ function sendReportRequest() {
     });
     var selectedVariant = variantDropdown ? variantDropdown.value : '';
 
-    if (!selectedUserId || !selectedVariant || selectedStatuses.length === 0) {
-    var errorMessage = document.getElementById('error-message');
+    if (selectedUserId === 'Select User' || !selectedUserId || !selectedVariant || selectedStatuses.length === 0) {
+        var errorMessage = document.getElementById('error-message');
         errorMessage.textContent = 'Please fill in all the required fields.';
+        errorMessage.style.display = 'block';
         return;
     }
+
     var errorMessage = document.getElementById('error-message');
     errorMessage.textContent = '';
+    errorMessage.style.display = 'none';
 
     var data = {
         user_id: selectedUserId,

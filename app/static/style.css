@@ -3,9 +3,32 @@
   box-sizing: border-box;
 }
 
+body {
+    height: 100vh;
+}
+
+:root {
+  --background-color: rgb(243, 222, 215);
+}
+
 #button_add_task, #input_add_task {
   border: none;
-  background-color: rgb(245, 218, 208);
+  background-color: var(--background-color);
+}
+
+.dropdown-menu {
+  background-color: var(--background-color);
+}
+
+.dropdown-item {
+  color: black;
+}
+
+.dropdown-item:hover,
+.dropdown-item:focus {
+  background-color: var(--background-color);
+  color: black;
+  text-decoration: underline;
 }
 
 #input_add_task {

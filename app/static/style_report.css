@@ -3,17 +3,51 @@
   box-sizing: border-box;
 }
 
+body {
+    height: 100vh;
+}
+
+:root {
+  --background-color: rgb(243, 222, 215);
+}
+
+#error-message {
+  display: none;
+}
+
 .project-row {
   font-weight: bold;
   background-color: #f5f5f5;
 }
-.task-row {
+
+.table-header {
+  background-color: #f5f5f5;
+}
+
+.task-row td:first-child {
   padding-left: 20px;
 }
+
 .toggle-icon {
   cursor: pointer;
   user-select: none;
 }
+
 .hidden {
   display: none;
+}
+
+.dropdown-menu {
+  background-color: var(--background-color);
+}
+
+.dropdown-item {
+  color: black;
+}
+
+.dropdown-item:hover,
+.dropdown-item:focus {
+  background-color: var(--background-color);
+  color: black;
+  text-decoration: underline;
 }

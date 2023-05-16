@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-xOg5mRAJ5o5KmI6xMYB5F9Y9/KNgFyANli+cxN76zDjLuSP25w29gNf+6JoC0N24nkyvHRRK+vWYgX9yMnCJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <title>Task manager</title>
 </head>
-<body style="background-color: rgb(245, 218, 208);">
+<body style="background-color: var(--background-color);">
 
 <!--    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.14.0/jquery.validate.min.js"></script>-->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
@@ -24,7 +24,7 @@
             <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
-              <ul class="navbar-nav me-auto mb-2 mb-lg-0 text-light">
+              <ul class="navbar-nav ms-auto mb-2 mb-lg-0 text-light">
                 {% if current_user.is_authenticated %}
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle text-light" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
@@ -32,7 +32,7 @@
                         Reports
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item text-light" href="{{ url_for('reports.task_execution_report') }}">Task Execution Report</a>
+                        <a class="dropdown-item" href="{{ url_for('reports.task_execution_report') }}">Task Execution Report</a>
                     </div>
                 </li>
                 <li class="nav-item">
@@ -134,7 +134,7 @@
             </div>
 
             <div class="col-10 tasks">
-                <div class="row">
+                <div class="row me-1">
                     <div class="col-3 status">
                         {% if current_status == 'new' %}
                             <input type="radio" class="btn-check check-status" name="status" value="new" id="status_new" autocomplete="off" checked>

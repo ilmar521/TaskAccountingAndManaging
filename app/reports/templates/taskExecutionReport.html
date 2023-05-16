@@ -2,7 +2,7 @@
 
 {% block content %}
 
-<h4>Task Execution Report</h4>
+<h5 class="my-2">Task Execution Report</h5>
 
 <div id="error-message" class="alert alert-warning" role="alert">
 </div>
@@ -20,18 +20,19 @@
     </select>
     {% endif %}
 
-    <input type="checkbox" name="status[]" value="new" id="checkbox-new">
+    <input type="checkbox" name="status[]" value="new" id="checkbox-new" checked>
     <label for="checkbox-new">New</label><br>
-    <input type="checkbox" name="status[]" value="in_operation" id="checkbox-in-operation">
+    <input type="checkbox" name="status[]" value="in_operation" id="checkbox-in-operation" checked>
     <label for="checkbox-in-operation">In Operation</label><br>
-    <input type="checkbox" name="status[]" value="complete" id="checkbox-complete">
+    <input type="checkbox" name="status[]" value="complete" id="checkbox-complete" checked>
     <label for="checkbox-complete">Complete</label><br>
     <input type="checkbox" name="status[]" value="archive" id="checkbox-archive">
     <label for="checkbox-archive">Archive</label><br>
 
     <select id="variantDropdown" class="form-select">
         <option disabled selected>Select variant</option>
-        <option value="main">Main</option>
+        <option value="main">By projects</option>
+        <option value="users">By projects/users</option>
     </select>
 
     <button id="makeReportBtn">Make report</button>

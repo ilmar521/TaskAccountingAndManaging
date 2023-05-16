@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, redirect, url_for, request, flash
 from app.models import User, Task, Project
-from sqlalchemy import func, or_
+from sqlalchemy import func, text
 from flask_login import current_user
 
 reports = Blueprint('reports', __name__, template_folder='templates')
@@ -8,49 +8,64 @@ reports = Blueprint('reports', __name__, template_folder='templates')
 from app import db
 
 
+
 def main_task_execution_report(selected_user, selected_statuses):
-
     if not current_user.admin:
-        selected_user = current_user
+        selected_user = current_user.id
 
-    task_data = db.session.query(
-        Project,
-        func.sum(Task.hours).label('total_hours'),
-        Project.hour_rate,
-        func.sum(Task.hours * Project.hour_rate).label('total_amount')
-    ).join(Task).filter(
-        Task.status.in_(selected_statuses),
-        or_(Task.user_id == selected_user, selected_user == 'All')
-    ).group_by(Project).all()
+    sql_query = text('''
+        SELECT
+            p.id AS project_id,
+            p.name AS project_name,
+            p.hour_rate AS project_hour_rate,
+            t.id AS task_id,
+            t.details AS task_details,
+            t.hours AS task_hours,
+            t.hours * p.hour_rate AS amount
+        FROM
+            project p
+        JOIN
+            task t ON p.id = t.project_id
+        WHERE
+            t.status IN :selected_statuses
+            AND (t.user_id = :selected_user OR :ALL_users)
+        GROUP BY
+            p.id, p.name, p.hour_rate, t.details, t.id
+    ''')
+
+    task_data = db.session.execute(sql_query, {'selected_statuses': tuple(selected_statuses), 'selected_user': 0 if selected_user == 'All' else selected_user, 'ALL_users': True if selected_user == 'All' else False})
 
     result = {}
-    for project, total_hours, hour_rate, total_amount in task_data:
-        project_data = {
-            'name': project.name,
-            'description': project.description,
-            'hour_rate': project.hour_rate,
-            'total_hours': total_hours,
-            'total_amount': total_amount
-        }
-
-        project_tasks = project.tasks.all()
-        tasks_data = []
-        for task in project_tasks:
-            task_data = {
-                'details': task.details,
-                'description': task.description,
-                'status': task.status,
-                'hours': task.hours,
-                'hour_rate': project.hour_rate,
-                'total_amount': task.hours * project.hour_rate
+    total_hours = 0
+    total_amount = 0
+    for row in task_data:
+        project_id = row[0]
+        if project_id not in result:
+            project_data = {
+                'name': row[1],
+                'hour_rate': row[2],
+                'total_hours': 0,
+                'total_amount': 0,
+                'tasks': []
             }
-            tasks_data.append(task_data)
+            result[project_id] = project_data
 
-        project_data['tasks'] = tasks_data
-        result[project.id] = project_data
+        hours = row[5]
+        amount = row[6]
+        project_data = result[project_id]
+        project_data['total_hours'] += hours
+        project_data['total_amount'] += amount
+        total_hours += hours
+        total_amount += amount
 
-    return render_template('taskExecutionReport_main.html', result=result)
+        task_data = {
+            'details': row[4],
+            'hours': row[5],
+            'total_amount': row[6]
+        }
+        project_data['tasks'].append(task_data)
 
+    return render_template('taskExecutionReport_main.html', result=result, total_hours=total_hours, total_amount=total_amount)
 
 @reports.route('/task_execution_report')
 def task_execution_report():
