@@ -1,5 +1,14 @@
 import flask_wtf
 import wtforms
+from app.models import User
+
+
+class UserTableForm(flask_wtf.FlaskForm):
+    id = wtforms.HiddenField()
+    user = wtforms.SelectField('User', choices=[], validators=[wtforms.validators.InputRequired()])
+
+    def set_choices(self):
+        self.user.choices = [(u.id, u.name) for u in User.query.all() if not u.admin]
 
 
 class TaskEditForm(flask_wtf.FlaskForm):

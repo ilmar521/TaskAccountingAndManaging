@@ -2,6 +2,11 @@ from app import flask_app, db
 from flask_login import UserMixin
 
 
+user_project_table = db.Table('user_project',
+                           db.Column('project_id', db.Integer, db.ForeignKey('project.id')),
+                           db.Column('user_id', db.Integer, db.ForeignKey('user.id'))
+                           )
+
 class AttachmentProjects(db.Model):
     id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     name = db.Column(db.String(250))
@@ -37,6 +42,7 @@ class User(UserMixin, db.Model):
     name = db.Column(db.String(1000))
     admin = db.Column(db.Boolean)
     tasks = db.relationship('Task', backref='user', lazy='dynamic')
+    projects = db.relationship('Project', secondary=user_project_table, back_populates="users")
 
 
 class Task(db.Model):
@@ -77,6 +83,7 @@ class Project(db.Model):
     tasks = db.relationship('Task', backref='project', cascade="all, delete", lazy='dynamic')
     attachments = db.relationship('AttachmentProjects', cascade="all, delete", backref='project', lazy='dynamic')
     notes = db.relationship('NotesProjects', cascade="all, delete", backref='project', lazy='dynamic')
+    users = db.relationship('User', secondary=user_project_table, back_populates="projects")
 
     def __getitem__(self, item):
         return getattr(self, item)

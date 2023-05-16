@@ -3,6 +3,32 @@ let input = document.querySelectorAll('input.btn-check');
 let tasks = document.querySelectorAll('.task');
 let statuses = document.querySelectorAll('.status');
 
+function addUser() {
+  var userSelect = document.getElementById("user-select");
+  var userTable = document.getElementById("user-table");
+  var userId = userSelect.value;
+  var userName = userSelect.options[userSelect.selectedIndex].text;
+
+  var userRows = userTable.getElementsByTagName("tr");
+  for (var i = 0; i < userRows.length; i++) {
+    if (userRows[i].getAttribute("data-id") == userId) {
+      return;
+    }
+  }
+
+  var newRow = document.createElement("tr");
+  newRow.setAttribute("data-id", userId);
+  newRow.innerHTML = "<td>" + userName + "</td>" +
+                     "<td><button  type='button' class='btn btn-danger' onclick='deleteRow(" + userId + ")'>X</button></td>";
+  userTable.appendChild(newRow);
+}
+
+function deleteRow(id) {
+  var row = document.querySelector("tr[data-id='" + id + "']");
+  if (row) {
+    row.parentNode.removeChild(row);
+  }
+}
 
 function openFile(fileId, prj) {
     var path = prj ? "open_prj" : "open";
@@ -136,12 +162,16 @@ $(document).ready(function () {
             $('#Modal_layout_prj .modal-content').html(data);
             $('#Modal_layout_prj').modal('show');
             $("#Modal_layout_prj").on('hidden.bs.modal', function (e) {
-                $.post(url, data = $('#ModalForm_edit_project').serialize(), function (
-                    data) {
+                var formData = $('#ModalForm_edit_project').serializeArray();
+                $('#user-table tr').each(function() {
+                    var rowId = $(this).attr('data-id');
+                    formData.push({ name: 'user_ids[]', value: parseInt(rowId) });
+                });
+                $.post(url, formData, function (data) {
                     if (data.status == 'updated') {
                         $("#main_form").submit();
                     }
-                 })
+                }, 'json');
             });
             $('#delete_project').click(function (event) {
                 event.preventDefault();

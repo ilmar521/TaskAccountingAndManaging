@@ -1,7 +1,7 @@
 import flask
 from app import flask_app, db
-from app.models import Task, Project, AttachmentProjects, AttachmentTasks, NotesTasks, NotesProjects
-from app.forms import TaskEditForm, ProjectEditForm
+from app.models import Task, Project, AttachmentProjects, AttachmentTasks, NotesTasks, NotesProjects, User
+from app.forms import TaskEditForm, ProjectEditForm, UserTableForm
 from flask import flash, jsonify, redirect, url_for, render_template, request, send_file
 from flask_login import current_user
 from io import BytesIO
@@ -219,15 +219,23 @@ def delete_task(task_id):
 @flask_app.route('/project/<id>/edit', methods=['GET', 'POST'])
 def project_edit(id):
     project = Project.query.filter_by(id=id).first_or_404()
+    users = project.users
     files = list(AttachmentProjects.query.filter_by(project_id=id))
     notes = list(NotesProjects.query.filter_by(project_id=id).order_by(NotesProjects.date.desc()).all())
     form = ProjectEditForm(name=project.name, hour_rate=project.hour_rate, description=project.description)
+    form_add = UserTableForm()
+    form_add.set_choices()
     if request.method == 'GET':
         form.name.data = project.name
         form.hour_rate.data = project.hour_rate
         form.description.data = project.description
     else:
         status = 'close'
+        user_ids = request.form.getlist('user_ids[]')
+        users = User.query.filter(User.id.in_(user_ids)).all()
+        if set(user_ids) != set(user.id for user in project.users):
+            project.users = users
+            db.session.commit()
         if project.name != form.name.data or project.hour_rate != form.hour_rate.data or project.description != form.description.data:
             if project.name != form.name.data:
                 status = 'updated'
@@ -238,7 +246,7 @@ def project_edit(id):
                 db.session.merge(project)
                 db.session.commit()
         return jsonify(status=status)
-    return render_template('_project_edit.html', title="Edit project", form=form, files=files, notes=notes, project=project)
+    return render_template('_project_edit.html', title="Edit project", form=form, files=files, notes=notes, project=project, form_add=form_add, users=users)
 
 
 @flask_app.route("/delete_project/<project_id>", methods=("GET", "POST"))
