@@ -1,16 +1,16 @@
 const variantDropdown = document.getElementById('variantDropdown');
 variantDropdown.value = 'main'
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
   var makeReportBtn = document.getElementById('makeReportBtn');
-    makeReportBtn.addEventListener('click', sendReportRequest);
+  makeReportBtn.addEventListener('click', sendReportRequest);
 });
 
 function toggleProject() {
   var projectRow = this.parentNode.parentNode;
   var nextRow = projectRow.nextElementSibling;
 
-    console.log('click on toggle');
+  console.log('click on toggle');
 
   while (nextRow && !nextRow.classList.contains('project-row')) {
     if (nextRow.classList.contains('task-row')) {
@@ -26,58 +26,58 @@ function toggleProject() {
   if (projectRow.classList.contains('collapsed')) {
     projectRow.classList.remove('collapsed');
     this.textContent = '-';
-    } else {
+  } else {
     projectRow.classList.add('collapsed');
     this.textContent = '+';
-    }
+  }
 }
 
 function sendReportRequest() {
-    var userDropdown = document.getElementById('userDropdown');
-    var statusCheckboxes = document.querySelectorAll('input[name="status[]"]:checked');
-    var variantDropdown = document.getElementById('variantDropdown');
+  var userDropdown = document.getElementById('userDropdown');
+  var statusCheckboxes = document.querySelectorAll('input[name="status[]"]:checked');
+  var variantDropdown = document.getElementById('variantDropdown');
 
-    var selectedUserId = '';
-    if (document.getElementById('userDropdown')) {
-      selectedUserId = userDropdown ? userDropdown.value : '';
-    } else {
-      selectedUserId = 'none';
-    }
-    var selectedStatuses = Array.from(statusCheckboxes, function(checkbox) {
-      return checkbox.value;
-    });
-    var selectedVariant = variantDropdown ? variantDropdown.value : '';
+  var selectedUserId = '';
+  if (document.getElementById('userDropdown')) {
+    selectedUserId = userDropdown ? userDropdown.value : '';
+  } else {
+    selectedUserId = 'none';
+  }
+  var selectedStatuses = Array.from(statusCheckboxes, function (checkbox) {
+    return checkbox.value;
+  });
+  var selectedVariant = variantDropdown ? variantDropdown.value : '';
 
-    if (selectedUserId === 'Select User' || !selectedUserId || !selectedVariant || selectedStatuses.length === 0) {
-        var errorMessage = document.getElementById('error-message');
-        errorMessage.textContent = 'Please fill in all the required fields.';
-        errorMessage.style.display = 'block';
-        return;
-    }
-
+  if (selectedUserId === 'Select User' || !selectedUserId || !selectedVariant || selectedStatuses.length === 0) {
     var errorMessage = document.getElementById('error-message');
-    errorMessage.textContent = '';
-    errorMessage.style.display = 'none';
+    errorMessage.textContent = 'Please fill in all the required fields.';
+    errorMessage.style.display = 'block';
+    return;
+  }
 
-    var data = {
-        user_id: selectedUserId,
-        statuses: selectedStatuses,
-        variant: selectedVariant
-    };
+  var errorMessage = document.getElementById('error-message');
+  errorMessage.textContent = '';
+  errorMessage.style.display = 'none';
 
-    fetch(`/task_execution_report/${selectedVariant}`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
+  var data = {
+    user_id: selectedUserId,
+    statuses: selectedStatuses,
+    variant: selectedVariant
+  };
+
+  fetch(`/task_execution_report/${selectedVariant}`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
     },
     body: JSON.stringify(data),
-        })
-        .then(response => response.text())
-        .then(tableHtml => {
-          var reportArea = document.getElementById('report_area');
-          reportArea.innerHTML = tableHtml;
+  })
+    .then(response => response.text())
+    .then(tableHtml => {
+      var reportArea = document.getElementById('report_area');
+      reportArea.innerHTML = tableHtml;
     })
     .catch(error => {
       console.error('Error:', error);
     });
-  }
+}

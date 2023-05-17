@@ -248,3 +248,8 @@ body {
   height:250px;
   overflow-y: scroll;
 }
+
+.description-field {
+    margin-top: 10px;
+    height:250px
+}
