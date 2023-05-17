@@ -8,7 +8,6 @@ reports = Blueprint('reports', __name__, template_folder='templates')
 from app import db
 
 
-
 def main_task_execution_report(selected_user, selected_statuses):
     if not current_user.admin:
         selected_user = current_user.id
