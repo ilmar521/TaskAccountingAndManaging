@@ -1,7 +1,7 @@
 
-let input = document.querySelectorAll('input.btn-check');
-let tasks = document.querySelectorAll('.task');
-let statuses = document.querySelectorAll('.status');
+//let input = document.querySelectorAll('input.btn-check');
+//let tasks = document.querySelectorAll('.task');
+//let statuses = document.querySelectorAll('.status');
 
 function addUser() {
   var userSelect = document.getElementById("user-select");
@@ -125,6 +125,24 @@ function addNote(prj) {
   xhr.send(formData);
 }
 
+function handleChange(event) {
+  var form = document.getElementById('main_form');
+  var formData = new FormData(form);
+
+  fetch(`/change_task_area`, {
+    method: 'POST',
+    body: formData,
+  })
+    .then(response => response.text())
+    .then(tableHtml => {
+      var reportArea = document.getElementById('task_area');
+      reportArea.innerHTML = tableHtml;
+    })
+    .catch(error => {
+      console.error('Error:', error);
+    });
+}
+
 $(document).ready(function () {
   $('.btn_edit_task').click(function () {
     var url = $(this).data('whatever');
@@ -189,28 +207,40 @@ $(document).ready(function () {
 
 });
 
+//tasks.forEach(element => {
+//  element.addEventListener('dragstart', function (event) {
+//    event.dataTransfer.setData('id', event.target.id);
+//  });
+//});
 
-input.forEach(element => {
-  element.addEventListener('change', function () {
-    $("#main_form").submit();
-  });
-});
-
-tasks.forEach(element => {
-  element.addEventListener('dragstart', function (event) {
+function startDragTask(event) {
     event.dataTransfer.setData('id', event.target.id);
-  });
-});
+}
 
-statuses.forEach(element => {
-  element.addEventListener('dragover', function (event) {
+function dragOverTask(event) {
     event.preventDefault();
-  })
+}
 
-  element.addEventListener('drop', function (event) {
+function dropTask(event) {
     event.preventDefault();
     let id = event.dataTransfer.getData("id");
     $.post(`/change_status/${id}/${event.target.id}`);
-    setTimeout(() => $("#main_form").submit(), 10);
-  })
-});
+    setTimeout(function() {
+        handleChange(event);
+      }, 10);
+}
+
+//statuses.forEach(element => {
+//  element.addEventListener('dragover', function (event) {
+//    event.preventDefault();
+//  })
+//
+//  element.addEventListener('drop', function (event) {
+//    event.preventDefault();
+//    let id = event.dataTransfer.getData("id");
+//    $.post(`/change_status/${id}/${event.target.id}`);
+//    setTimeout(function() {
+//        handleChange(event);
+//      }, 10);
+//  })
+//});

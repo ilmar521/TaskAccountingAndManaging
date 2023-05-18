@@ -135,6 +135,20 @@ def get_allowed_projects():
     return Project.query.join(Project.users).filter(User.id == current_user.id).order_by(Project.id).all()
 
 
+@flask_app.route("/change_task_area", methods=("GET", "POST"))
+def change_task_area():
+    global current_project, current_status
+
+    projects = request.form.getlist('project')
+    statuses = request.form.getlist('status')
+    current_project = 0 if len(projects) == 0 else int(projects[0])
+    current_status = statuses[0]
+    all_projects = get_allowed_projects()
+    all_tasks = list(Task.query.filter(Task.project_id == current_project, Task.status == current_status,
+                                       Task.user_id == current_user.id))
+    return render_template('task_area.html', all_tasks=all_tasks, all_projects=all_projects, current_project=current_project, current_status=current_status, numbers_of_tasks=count_tasks_by_project(current_project))
+
+
 @flask_app.route("/", methods=("GET", "POST"))
 def index():
     global current_project, current_status

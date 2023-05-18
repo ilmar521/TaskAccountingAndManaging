@@ -56,12 +56,6 @@ def signup_post():
     return redirect(url_for('auth.login'))
 
 
-@auth.route('/profile')
-@login_required
-def profile():
-    return render_template('profile.html', name=current_user.name)
-
-
 @auth.route('/logout')
 @login_required
 def logout():

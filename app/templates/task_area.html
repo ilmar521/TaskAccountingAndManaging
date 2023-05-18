@@ -1,0 +1,136 @@
+<div class="col-2 projects">
+    <div class="w-100 d-flex mb-3 mt-2">
+        <h3>Projects</h3>
+        {% if current_user.admin %}
+        <a style="padding-top: 7px;" type="button" class="mx-2 btn-danger" data-bs-toggle="modal"
+            data-bs-target="#project_adding"><i class="fa-sharp fa-solid fa-plus fa-lg"
+                style="color: #010813;"></i></a>
+        {% endif %}
+    </div>
+
+    <div class="btn-group-vertical w-100" role="group" aria-label="Vertical radio toggle button group">
+        {% for project in all_projects %}
+        <div class="project d-flex w-100">
+            {% if current_project == project['id'] %}
+            <input type="radio" class="btn-check check-project" name="project"
+                value="{{ project['id'] }}" id="project-{{ project['id'] }}" autocomplete="off" checked onchange="handleChange(event)">
+            {% else %}
+            <input type="radio" class="btn-check check-project" name="project"
+                value="{{ project['id'] }}" id="project-{{ project['id'] }}" autocomplete="off" onchange="handleChange(event)">
+            {% endif %}
+            <label class="btn btn-project btn-outline-danger bg-gradient w-100"
+                for="project-{{ project['id'] }}">{{ project['name'] }} <a class="btn_edit_prj"
+                    data-bs-toggle="modal"
+                    data-whatever="{{ url_for('project_edit', id=project['id']) }}"
+                    data-id="{{ project['id'] }}" href="#"><i
+                        class="fa-solid fa-pen fa-sm"></i></a></label>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<div class="col-10 tasks">
+    <div class="row me-1">
+        <div class="col-3 status" ondragover="dragOverTask(event)" ondrop="dropTask(event)">
+            {% if current_status == 'new' %}
+            <input type="radio" class="btn-check check-status" name="status" value="new" id="status_new"
+                autocomplete="off" checked onchange="handleChange(event)" >
+            {% else %}
+            <input type="radio" class="btn-check check-status" name="status" value="new" id="status_new"
+                autocomplete="off" onchange="handleChange(event)">
+            {% endif %}
+            <label style="background-color: rgb(192, 210, 226);"
+                class="btn-status btn btn-secondary position-relative" id="label_new"
+                for="status_new">New
+                {% if numbers_of_tasks['new'] > 0 %}
+                <span
+                    class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                    {{ numbers_of_tasks['new'] }}
+                </span>
+                {% endif %}
+            </label>
+        </div>
+        <div class="col-3 status" ondragover="dragOverTask(event)" ondrop="dropTask(event)">
+            {% if current_status == 'in_operation' %}
+            <input type="radio" class="btn-check check-status" name="status" value="in_operation"
+                id="status_in_operation" autocomplete="off" checked onchange="handleChange(event)">
+            {% else %}
+            <input type="radio" class="btn-check check-status" name="status" value="in_operation"
+                id="status_in_operation" autocomplete="off" onchange="handleChange(event)">
+            {% endif %}
+            <label style="background-color: rgb(146, 144, 247);"
+                class="btn-status btn btn-secondary position-relative" id="label_in_operation"
+                for="status_in_operation">In operation
+                {% if numbers_of_tasks['in_operation'] > 0 %}
+                <span
+                    class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                    {{ numbers_of_tasks['in_operation'] }}
+                </span>
+                {% endif %}
+            </label>
+        </div>
+        <div class="col-3 status" ondragover="dragOverTask(event)" ondrop="dropTask(event)">
+            {% if current_status == 'complete' %}
+            <input type="radio" class="btn-check check-status" name="status" value="complete"
+                id="status_complete" autocomplete="off" checked onchange="handleChange(event)">
+            {% else %}
+            <input type="radio" class="btn-check check-status" name="status" value="complete"
+                id="status_complete" autocomplete="off" onchange="handleChange(event)">
+            {% endif %}
+            <label style="background-color: rgb(132, 212, 163);"
+                class="btn-status btn btn-secondary position-relative" id="label_complete"
+                for="status_complete">Complete
+                {% if numbers_of_tasks['complete'] > 0 %}
+                <span
+                    class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                    {{ numbers_of_tasks['complete'] }}
+                </span>
+                {% endif %}
+            </label>
+        </div>
+        <div class="col-3 status" ondragover="dragOverTask(event)" ondrop="dropTask(event)">
+            {% if current_status == 'archive' %}
+            <input type="radio" class="btn-check check-status" name="status" value="archive"
+                id="status_archive" autocomplete="off" checked onchange="handleChange(event)">
+            {% else %}
+            <input type="radio" class="btn-check check-status" name="status" value="archive"
+                id="status_archive" autocomplete="off" onchange="handleChange(event)">
+            {% endif %}
+            <label style="background-color: rgb(157, 160, 159);" class="btn-status btn btn-secondary "
+                id="label_archive" for="status_archive">Archive</label>
+        </div>
+    </div>
+    <div class="row">
+        <div class="container w-75 mt-5">
+            {% for message in get_flashed_messages() %}
+            <div class="alert alert-warning" role="alert">
+                {{ message }}
+            </div>
+            {% endfor %}
+            {% for task in all_tasks %}
+            <div class="task my-1" draggable='True' ondragstart="startDragTask(event)" id="task-{{ task['id'] }}">
+                {% if task['hours'] > 0 %}
+                <a class="btn_edit_task" data-bs-toggle="modal"
+                    data-whatever="{{ url_for('task_edit', id=task['id']) }}" data-id="{{ task['id'] }}"
+                    id="{{ task['id'] }}" href="#"><span class="task-span">{{ task['details'] + ' - (' +
+                        task['hours']|string + ')' }}</span></a>
+                {% else %}
+                <a class="btn_edit_task" data-bs-toggle="modal"
+                    data-whatever="{{ url_for('task_edit', id=task['id']) }}" data-id="{{ task['id'] }}"
+                    id="{{ task['id'] }}" href="#"><span class="task-span">{{ task['details']
+                        }}</span></a>
+                {% endif %}
+            </div>
+            {% endfor %}
+            {% if current_status == 'new' %}
+            <div class="input-group mb-3 mt-4">
+                <input name="task-name" type="text" class="form-control" placeholder="new task"
+                    aria-label="Recipient's username" aria-describedby="button-addon2"
+                    id="input_add_task">
+                <button type="submit" name="button_add_task" id="button_add_task"><i
+                        class="fa-sharp fa-solid fa-plus fa-lg" style="color: #dd4151;"></i> </button>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
