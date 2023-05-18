@@ -181,12 +181,12 @@ $(document).ready(function () {
       $('#Modal_layout_prj .modal-content').html(data);
       $('#Modal_layout_prj').modal('show');
       $("#Modal_layout_prj").on('hidden.bs.modal', function (e) {
-        var formData = $('#ModalForm_edit_project').serializeArray();
+        var formData = $('#ModalForm_edit_project').serialize();
         $('#user-table tr').each(function () {
           var rowId = $(this).attr('data-id');
-          formData.push({ name: 'user_ids[]', value: parseInt(rowId) });
+          formData += '&user_ids[]=' + parseInt(rowId);
         });
-        $.post(url, formData, function (data) {
+        $.post(url, data = formData, function (data) {
           if (data.status == 'updated') {
             handleChange(event);
           }
