@@ -161,25 +161,15 @@ def index():
         statuses = request.form.getlist('status')
         current_project = 0 if len(projects) == 0 else int(projects[0])
         current_status = statuses[0]
-        task_name = request.form.get("task-name")
-        task_adding = request.form.get("button_add_task")
-        if task_adding is not None:
-            if task_name == '':
-                flash('Enter the name of task!')
-            elif current_project == 0:
-                flash('Select project for adding new task!')
-            else:
-                new_task = Task(details=task_name, status='new', hours=0, project_id=current_project, user_id=current_user.id)
-                new_task.save_task_to_db()
         all_projects = get_allowed_projects()
-        all_tasks = list(Task.query.filter(Task.project_id == current_project, Task.status == current_status, Task.user_id == current_user.id))
+        all_tasks = list(Task.query.filter(Task.project_id == current_project, Task.status == current_status, Task.user_id == current_user.id).order_by(Task.id))
     else:
         all_projects = get_allowed_projects()
         if current_project is None:
             current_project = 0 if len(all_projects) == 0 else all_projects[0].id
         if current_status is None:
             current_status = 'in_operation'
-        all_tasks = list(Task.query.filter(Task.project_id == current_project, Task.status == current_status, Task.user_id == current_user.id))
+        all_tasks = list(Task.query.filter(Task.project_id == current_project, Task.status == current_status, Task.user_id == current_user.id).order_by(Task.id))
     return render_template('index.html', all_tasks=all_tasks, all_projects=all_projects, current_project=current_project, current_status=current_status, numbers_of_tasks=count_tasks_by_project(current_project))
 
 
@@ -200,6 +190,31 @@ def add_project():
         new_project = Project(name=name_new_project, hour_rate=hour_rate)
         new_project.save_to_db()
         return redirect(url_for('index'))
+
+
+@flask_app.route("/add_task", methods=['POST'])
+def add_task():
+    global current_project, current_status
+
+    projects = request.form.getlist('project')
+    current_project = 0 if len(projects) == 0 else int(projects[0])
+    current_status = "new"
+    task_name = request.form.get("task-name")
+    if task_name == '':
+        flash('Enter the name of task!')
+    elif current_project == 0:
+        flash('Select project for adding new task!')
+    else:
+        new_task = Task(details=task_name, status='new', hours=0, project_id=current_project,
+                        user_id=current_user.id)
+        new_task.save_task_to_db()
+
+    all_projects = get_allowed_projects()
+    all_tasks = list(Task.query.filter(Task.project_id == current_project, Task.status == current_status,
+                                       Task.user_id == current_user.id).order_by(Task.id))
+    return render_template('task_area.html', all_tasks=all_tasks, all_projects=all_projects,
+                           current_project=current_project, current_status=current_status,
+                           numbers_of_tasks=count_tasks_by_project(current_project))
 
 
 @flask_app.route('/task/<id>/edit', methods=['GET', 'POST'])

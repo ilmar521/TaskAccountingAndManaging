@@ -249,8 +249,8 @@
                             <div class="input-group mb-3 mt-4">
                                 <input name="task-name" type="text" class="form-control" placeholder="new task"
                                     aria-label="Recipient's username" aria-describedby="button-addon2"
-                                    id="input_add_task">
-                                <button type="submit" name="button_add_task" id="button_add_task"><i
+                                    id="input_add_task" onkeydown="handleKeyDown(event)">
+                                <button type="button" name="button_add_task" id="button_add_task" onclick="addTask(event)"><i
                                         class="fa-sharp fa-solid fa-plus fa-lg" style="color: #dd4151;"></i> </button>
                             </div>
                             {% endif %}
@@ -261,7 +261,6 @@
         </div>
     </form>
 
-    <script src="../static/script.js"></script>
     <script src={{url_for('static', filename='script.js' )}}></script>
 </body>
 

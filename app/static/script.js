@@ -1,8 +1,4 @@
 
-//let input = document.querySelectorAll('input.btn-check');
-//let tasks = document.querySelectorAll('.task');
-//let statuses = document.querySelectorAll('.status');
-
 function addUser() {
   var userSelect = document.getElementById("user-select");
   var userTable = document.getElementById("user-table");
@@ -144,7 +140,8 @@ function handleChange(event) {
 }
 
 $(document).ready(function () {
-  $('.btn_edit_task').click(function () {
+  $('#main_form').on('click', '.btn_edit_task', function (event) {
+    event.preventDefault();
     var url = $(this).data('whatever');
     var id_task = $(this).data('id');
     $.ajaxSetup({ cache: false });
@@ -156,7 +153,7 @@ $(document).ready(function () {
         $.post(url, data = $('#ModalForm_edit_task').serialize(), function (
           data) {
           if (data.status == 'updated') {
-            $("#main_form").submit();
+            handleChange(event);
           }
         })
       });
@@ -165,15 +162,17 @@ $(document).ready(function () {
         event.preventDefault();
         result = confirm('Are you sure?');
         if (result) {
-          $.post(`/delete_task/${id_task}`);
-          $("#main_form").submit();
-          $("#Modal_layout_task").hide();
+          $.post(`/delete_task/${id_task}`, function (data) {
+            $("#Modal_layout_task").modal('hide');
+            handleChange(event);
+          });
         }
       })
     })
   });
 
-  $('.btn_edit_prj').click(function () {
+  $('#main_form').on('click', '.btn_edit_prj', function (event) {
+    event.preventDefault();
     var url = $(this).data('whatever');
     var id_prj = $(this).data('id');
     $.ajaxSetup({ cache: false });
@@ -189,7 +188,7 @@ $(document).ready(function () {
         });
         $.post(url, formData, function (data) {
           if (data.status == 'updated') {
-            $("#main_form").submit();
+            handleChange(event);
           }
         }, 'json');
       });
@@ -197,9 +196,10 @@ $(document).ready(function () {
         event.preventDefault();
         result = confirm('Are you sure? All tasks included in this project will also be deleted.');
         if (result) {
-          $.post(`/delete_project/${id_prj}`);
-          $("#main_form").submit();
-          $("#Modal_layout_prj").hide();
+          $.post(`/delete_project/${id_prj}`, function (data) {
+            $("#Modal_layout_prj").modal('hide');
+            handleChange(event);
+          });
         }
       })
     })
@@ -207,40 +207,48 @@ $(document).ready(function () {
 
 });
 
-//tasks.forEach(element => {
-//  element.addEventListener('dragstart', function (event) {
-//    event.dataTransfer.setData('id', event.target.id);
-//  });
-//});
-
 function startDragTask(event) {
-    event.dataTransfer.setData('id', event.target.id);
+  event.dataTransfer.setData('id', event.target.id);
 }
 
 function dragOverTask(event) {
-    event.preventDefault();
+  event.preventDefault();
 }
 
 function dropTask(event) {
-    event.preventDefault();
-    let id = event.dataTransfer.getData("id");
-    $.post(`/change_status/${id}/${event.target.id}`);
-    setTimeout(function() {
-        handleChange(event);
-      }, 10);
+  event.preventDefault();
+  let id = event.dataTransfer.getData("id");
+  $.post(`/change_status/${id}/${event.target.id}`);
+  setTimeout(function () {
+    handleChange(event);
+  }, 10);
 }
 
-//statuses.forEach(element => {
-//  element.addEventListener('dragover', function (event) {
-//    event.preventDefault();
-//  })
-//
-//  element.addEventListener('drop', function (event) {
-//    event.preventDefault();
-//    let id = event.dataTransfer.getData("id");
-//    $.post(`/change_status/${id}/${event.target.id}`);
-//    setTimeout(function() {
-//        handleChange(event);
-//      }, 10);
-//  })
-//});
+function addTask(event) {
+  addTaskMain();
+}
+
+function handleKeyDown(event) {
+  if (event.key === 'Enter') {
+    event.preventDefault();
+    addTaskMain();
+  }
+}
+
+function addTaskMain() {
+  var form = document.getElementById('main_form');
+  var formData = new FormData(form);
+
+  fetch(`/add_task`, {
+    method: 'POST',
+    body: formData,
+  })
+    .then(response => response.text())
+    .then(tableHtml => {
+      var reportArea = document.getElementById('task_area');
+      reportArea.innerHTML = tableHtml;
+    })
+    .catch(error => {
+      console.error('Error:', error);
+    });
+}
