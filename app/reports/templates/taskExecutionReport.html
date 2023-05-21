@@ -25,7 +25,9 @@
         <select id="variantDropdown" class="form-select">
             <option disabled selected>Select variant</option>
             <option value="main">By projects</option>
+            {% if current_user.admin %}
             <option value="users">By projects/users</option>
+            {% endif %}
         </select>
     </div>
 

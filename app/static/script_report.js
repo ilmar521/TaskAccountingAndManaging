@@ -10,8 +10,6 @@ function toggleProject() {
   var projectRow = this.parentNode.parentNode;
   var nextRow = projectRow.nextElementSibling;
 
-  console.log('click on toggle');
-
   while (nextRow && !nextRow.classList.contains('project-row')) {
     if (nextRow.classList.contains('task-row')) {
       if (nextRow.classList.contains('hidden')) {
@@ -28,6 +26,46 @@ function toggleProject() {
     this.textContent = '-';
   } else {
     projectRow.classList.add('collapsed');
+    this.textContent = '+';
+  }
+}
+
+function toggleUser() {
+  var userRow = this.parentNode.parentNode;
+  var nextRow = userRow.nextElementSibling;
+
+  while (nextRow && !nextRow.classList.contains('user-row')) {
+    if (nextRow.classList.contains('project-row')) {
+      if (nextRow.classList.contains('hidden')) {
+        nextRow.classList.remove('hidden');
+      } else {
+        nextRow.classList.add('hidden');
+      }
+
+      var nextRowTask = nextRow.nextElementSibling;
+      while (nextRowTask && !nextRowTask.classList.contains('project-row') && !nextRowTask.classList.contains('user-row')) {
+        if (nextRowTask.classList.contains('task-row')) {
+          if (nextRow.classList.contains('hidden')) {
+            nextRowTask.classList.add('hidden');
+          } else {
+            if (nextRow.classList.contains('collapsed')) {
+              nextRowTask.classList.add('hidden'); 
+            } else { 
+              nextRowTask.classList.remove('hidden');   
+            }         
+          }  
+        }
+        nextRowTask = nextRowTask.nextElementSibling;     
+      }
+    }
+    nextRow = nextRow.nextElementSibling;
+  }
+
+  if (userRow.classList.contains('collapsed')) {
+    userRow.classList.remove('collapsed');
+    this.textContent = '-';
+  } else {
+    userRow.classList.add('collapsed');
     this.textContent = '+';
   }
 }

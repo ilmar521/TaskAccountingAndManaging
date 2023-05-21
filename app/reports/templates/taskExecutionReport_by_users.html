@@ -1,0 +1,49 @@
+<div class="table-responsive">
+  <table class="table" class="table table-striped table-bordered">
+    <colgroup>
+      <col style="width: 55%;">
+      <col style="width: 15%;">
+      <col style="width: 15%;">
+      <col style="width: 15%;">
+    </colgroup>
+    <thead>
+      <tr class="table-header">
+        <th>User<br>Project<br>Task</th>
+        <th>Hours</th>
+        <th>Price</th>
+        <th>Total</th>
+      </tr>
+    </thead>
+    <tbody>
+
+    {% for user in result.values() %}
+    <tr class="user-row collapsed">
+      <td>
+        <span class="toggle-icon" onclick="toggleUser.call(this)">+</span> {{ user['name'] }}
+      </td>
+      <td>{{ user['total_hours'] }}</td>
+      <td></td>
+      <td>{{ user['total_amount'] }}</td>
+    </tr>   
+      {% for project in user['projects'].values() %}
+        <tr class="project-row level-1 collapsed hidden">
+            <td>
+              <span class="toggle-icon" onclick="toggleProject.call(this)">+</span> {{ project['name'] }}
+            </td>
+            <td>{{ project['total_hours'] }}</td>
+            <td>{{ project['hour_rate'] }}</td>
+            <td>{{ project['total_amount'] }}</td>
+        </tr>
+        {% for task in project['tasks'] %}
+          <tr class="task-row level-2 hidden">
+            <td> {{ task['details'] }} </td>
+            <td> {{ task['hours'] }} </td>
+            <td> {{ project['hour_rate'] }} </td>
+            <td> {{ task['total_amount'] }} </td>
+          </tr>
+        {% endfor %}
+      {% endfor %}
+    {% endfor %}
+    </tbody>
+  </table>
+</div>
