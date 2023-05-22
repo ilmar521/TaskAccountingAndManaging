@@ -10,7 +10,7 @@ function toggleProject() {
   var projectRow = this.parentNode.parentNode;
   var nextRow = projectRow.nextElementSibling;
 
-  while (nextRow && !nextRow.classList.contains('project-row')) {
+  while (nextRow && !nextRow.classList.contains('project-row') && !nextRow.classList.contains('total-row')) {
     if (nextRow.classList.contains('task-row')) {
       if (nextRow.classList.contains('hidden')) {
         nextRow.classList.remove('hidden');
@@ -43,7 +43,7 @@ function toggleUser() {
       }
 
       var nextRowTask = nextRow.nextElementSibling;
-      while (nextRowTask && !nextRowTask.classList.contains('project-row') && !nextRowTask.classList.contains('user-row')) {
+      while (nextRowTask && !nextRowTask.classList.contains('project-row') && !nextRowTask.classList.contains('user-row')  && !nextRowTask.classList.contains('total-row')) {
         if (nextRowTask.classList.contains('task-row')) {
           if (nextRow.classList.contains('hidden')) {
             nextRowTask.classList.add('hidden');

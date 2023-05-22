@@ -150,7 +150,6 @@ def task_execution_report():
 
 @reports.route('/task_execution_report/<variant>', methods=['POST'])
 def make_task_execution_report(variant):
-
     data = request.get_json()
     selected_user = data['user_id']
     selected_statuses = data['statuses']
