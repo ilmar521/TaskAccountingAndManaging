@@ -145,7 +145,7 @@ def change_task_area():
     current_status = statuses[0]
     all_projects = get_allowed_projects()
     all_tasks = list(Task.query.filter(Task.project_id == current_project, Task.status == current_status,
-                                       Task.user_id == current_user.id))
+                                       Task.user_id == current_user.id).order_by(Task.id))
     return render_template('task_area.html', all_tasks=all_tasks, all_projects=all_projects, current_project=current_project, current_status=current_status, numbers_of_tasks=count_tasks_by_project(current_project))
 
 

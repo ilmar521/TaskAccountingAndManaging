@@ -15,7 +15,7 @@ function addUser() {
   var newRow = document.createElement("tr");
   newRow.setAttribute("data-id", userId);
   newRow.innerHTML = "<td>" + userName + "</td>" +
-    "<td><button  type='button' class='btn btn-danger' onclick='deleteRow(" + userId + ")'>X</button></td>";
+    "<td class='text-end d-flex justify-content-end'><button  type='button' class='btn btn-danger' onclick='deleteRow(" + userId + ")'>X</button></td>";
   userTable.appendChild(newRow);
 }
 
